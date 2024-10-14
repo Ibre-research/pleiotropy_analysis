@@ -507,7 +507,6 @@ merged_data$pleiotropy_panUKB_maxindep = factor(ifelse(merged_data$pleio_degree_
 Next, we construct the plot of proportions of genes in different groups (for Extended Data Figure 1).
 
 ```{r}
-# Supplementary S1 - making the plot of gene proportions
 group_props <- as.numeric(table(merged_data$pleiotropy_HPO))
 group_props <- group_props/sum(group_props)
 for (src_name in c(source_names[2:3])) {
@@ -518,12 +517,14 @@ for (src_name in c(source_names[2:3])) {
 group_props <- as.data.frame(group_props)
 colnames(group_props) <- c('none', 'moderate', 'high')
 group_props$dataset <- source_names
+# Extended Data Figure 1
 ggplot(melt(group_props, id.vars='dataset'), aes(x=dataset, 
                       y=value, fill=variable)) +
   geom_bar(stat='identity', col='black') + theme_bw() +
   theme(panel.grid=element_blank(), 
         axis.text.x = element_text(angle=45, hjust=1)) +
   xlab('Data source') + ylab('Gene proportion') +
+  labs(fill='Pleiotropy') +
   scale_fill_brewer(palette="BuPu")
 ```
 
@@ -696,6 +697,7 @@ print(max_plot)
 
 ```{r}
 #| fig-show: hide
+# Extended Data Figure 2
 plot_grid(median_plot, mean_plot, max_plot, nrow=3, labels=c('a', 'b', 'c'),
           label_size=20)
 ```
@@ -712,6 +714,7 @@ print(ppi_plot)
 # Collin et al., 2022 - pHaplo and pTriplo
 phaplo_plot <- plot_feature('pHaplo', 'pHaplo')
 print(phaplo_plot)
+# Extended Data Figure 4
 ptriplo_plot <- plot_feature('pTriplo', 'pTriplo')
 print(ptriplo_plot)
 ```
@@ -873,7 +876,7 @@ print(mouse_cc$plot)
 
 ```{r}
 #| fig-show: hide
-# Figures S5-S7 (8 * 10 each)
+# Extended Data Figure 5-7 (8 * 10 each)
 plot_grid(human_bp$plot, mouse_bp$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
 plot_grid(human_mf$plot, mouse_mf$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
 plot_grid(human_cc$plot, mouse_cc$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
@@ -896,7 +899,7 @@ print(puk_cc$plot)
 
 ```{r}
 #| fig-show: hide
-# Figure S8
+# Extended Data Figure ?8
 plot_grid(puk_bp$plot, puk_cc$plot, puk_mf$plot, nrow=3, labels=c('a', 'b', 'c'), label_size=22)
 ```
 
@@ -1098,7 +1101,21 @@ plot_grid(venn_terms_bp, venn_terms_cc, NULL, NULL, venn_terms_mf, NULL,
           rel_heights = c(1, 0.2, 1))
 ```
 
+We also evaluate the degree of overlap in enriched CP pathways (when using the raw CP set):
+
+```{r}
+venn_cp <- ggvenn(list('HPO' = human_cp$df$ID, 
+                       'MGD' = mouse_cp$df$ID,
+                       'panUKB' = puk_cp$df$ID),
+                   set_name_size = 4, text_size=3, stroke_size=0.3,
+                   fill_color=brewer.pal(3, 'Accent'),
+                   show_percentage=FALSE)
+print(venn_cp)
+```
+
 Now we want to test if the overlap is mainly driven by genes that are highly pleiotropic in both datasets. To test for this, we need to construct sets of highly pleiotropic genes that are unique to each data source (trait domain, i.e. we treat HPO and MGD as a single source).
+
+#### Checking with domain-specific genes
 
 ```{r}
 # Unique gene enrichment
@@ -1156,11 +1173,52 @@ plot_grid(venn_terms_bpuq, venn_terms_ccuq,
           rel_heights = c(1, 0.2, 1))
 ```
 
-As we can see, the enrichment in pan-UKB data basically disappears (with the exception of a few terms). This observation indicates one of the following:
+Exporting the updated Extended data figure with term Venns.
 
--   highly pleiotropic genes with no phenotype associations in HPO/MGD are technical artifacts and not biologically meaningful;
+```{r}
+#| fig-show: hide
+# Extended Data Figure ?9
+plot_grid(venn_terms_cc, venn_terms_ccuq, 
+          NULL, NULL,
+          venn_terms_mf, venn_terms_mfuq,
+          nrow=3, labels=c('a', 'b', '', '', 'c', 'd'),
+          rel_heights = c(1, 0.2, 1))
+```
 
--   these genes are involved in diverse and specific functions, with no clear pathway enrichment.
+We can also do the same for the CP pathway set:
+
+```{r}
+hpouq_cp <- make_enrichment_plot(hip_hpo_no_puk,  "MSigDB",
+              "CP", 'Canonical pathways (human)', use_t2g = TRUE,
+              t2g_df=cp_human_t2g, data_source = "POUQ")
+mgduq_cp <- make_enrichment_plot(hip_mgd_no_puk, "MSigDB",
+              "CP", 'Canonical pathways (mouse)', use_t2g = TRUE,
+              t2g_df=cp_mouse_t2g, data_source = "POUQ")
+pukuq_cp <- make_enrichment_plot(hip_puk_no_mono, "MSigDB",
+              "CP", 'Canonical pathways (GWAS)', use_t2g = TRUE,
+              t2g_df=cp_human_t2g, data_source = "GWASUQ")
+venn_cp_uq <- ggvenn(list('HPO' = hpouq_cp$df$ID, 
+                          'MGD' = mgduq_cp$df$ID,
+                          'panUKB' = pukuq_cp$df$ID),
+                        set_name_size = 4, text_size=3,
+                        stroke_size=0.3, 
+                        fill_color=brewer.pal(3, 'Accent'),
+                        show_percentage=FALSE)
+print(venn_cp_uq)
+```
+
+As we can see, the enrichment in pan-UKB data basically disappears (with the exception of a few terms and a slightly higher number of CP pathways). Those that are still detected are, however, distinct from those found in HPO/MGD. This observation indicates the following:
+
+-   the hypothesis that dataset-specific highly pleiotropic genes control the same pathways as the shared ones is not true. It seems that, to the contrary, shared genes control the same set of pathways, and specific genes control specific pathways;
+
+-   There is a likely enrichment of GWAS-specific highly pleiotropic genes with technical causal gene inference artifacts (it explains the overall low rate of enrichment in this set of genes).
+
+Let's also print out the set of pathways that are uniquely enriched in GWAS, and draw the corresponding plot (which may be used in SI):
+
+```{r}
+print(pukuq_cp$df$ID)
+print(pukuq_cp$plot)
+```
 
 I will now combine the plots into the figure panels:
 
@@ -1276,6 +1334,7 @@ sharing_corrs$rho_coeff <- round(c(bp_sharing$test.result$estimate,
 And then we construct a combined plot of the results with the correlation coefficients in the corners:
 
 ```{r}
+# Extended Data Figure ?10
 go_term_sharing_all <- ggplot(all_sharing_df, aes(x=perc_hpo, y=perc_panukb)) +
   geom_hex(bins=20, col='black', lwd=0.3) + theme_bw() +
   geom_text(data=sharing_corrs, aes(label=rho_coeff), size = 3) +
@@ -1353,7 +1412,7 @@ plot_grid(fig3_venns, shared_top10_bp,
           nrow=2, rel_heights = c(0.7, 1))
 
 
-# Supplementary Figure wtih CC and MF terms
+# Extended Data Figure ?11
 plot_grid(plot_grid(NULL, shared_top10_cc, nrow=1, labels=c('a', ''),
                     label_size=20, rel_widths = c(0.3, 1)), 
           shared_top10_mf, nrow=2, 
@@ -1520,7 +1579,7 @@ Exporting extended data figure:
 
 ```{r}
 #| fig-show: hide
-# Extended Figure 11
+# Extended Data Figure ?12
 plot_grid(pli_plot, missense_plot, nrow=2, labels=c('a', 'b'), label_size=20)
 ```
 
@@ -1570,7 +1629,7 @@ plot_grid(phastcons_cds_plot, loeuf_plot, # phastcons_plot,
           nrow=3, labels=c('a', 'b', ''), label_size=20,
           rel_heights = c(0.62, 0.62, 1))
 
-# Figure S10
+# Extended Data Figure ?14
 plot_grid(ihs_plot, drc_plot, nrow=2, labels=c('a', 'b'), label_size=24)
 ```
 
@@ -1599,7 +1658,7 @@ And plotting the extended data figure with the locus-wise positive and negative 
 
 ```{r}
 #| fig-show: hide
-# Figure S9
+# Extended Data Figure ?13
 plot_grid(phc_locus_plot, ihs_locus_plot, drc_locus_plot, 
           phc_locus_prop_plot, ihs_locus_prop_plot, drc_locus_prop_plot, 
           nrow=2, labels=c('a', 'b', 'c', 'd', 'e', 'f'), label_size=20,
@@ -1627,6 +1686,6 @@ sum(merged_data$bidirectional_b, na.rm=T)/length(na.omit(merged_data$bidirection
 bidir_drc <- plot_feature('bidirectional_b', '', cutoff=0.5, 
                           cut_name='Bidirectional?')
 
-# Figure S10
+# Extended Data Figure ?15
 plot_grid(bidir_ihs, bidir_drc, nrow=1, labels=c('a', 'b'), label_size = 20)
 ```
