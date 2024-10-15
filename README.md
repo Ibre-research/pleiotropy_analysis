@@ -10,6 +10,10 @@ Barbitoff, Y.A., Bogaichuk, P.M., Pavlova, N.S., and Predeus, A.V. (2024) Unique
 
 To run the analysis pipeline, you will need `Python >= 3.10` (required package list: `pandas, numpy, scipy, sklearn, matplotlib, seaborn`) and `R >= 4.3` (required packages: `ggplot2, reshape2, clusterProfiler, org.Hs.eg.db, org.Mm.eg.db, msigdbr, colorRamps, ggsci, cowplot, ggvenn, stringr`).
 
+For running the GWAS data preprocessing workflow, you will need to first download the selected summary statistics files from the pan-UKB repository (the list of files is included in the repository).
+
+Make sure to decompress any compressed files in the `databases/` folder in case you would like to re-run some of the preliminary data analysis steps.
+
 ## Repository contents
 
 `final_analysis.Qmd` - the main analysis file used to generate all figures and comparisons presented in the article;
