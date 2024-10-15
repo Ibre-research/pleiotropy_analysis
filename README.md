@@ -31,3 +31,7 @@ Make sure to decompress any compressed files in the `databases/` folder in case 
 `selected_panukb_sumstats.txt` - a list of pan-UK Biobank GWAS datasets selected for analysis using the respective $$h^2$$ values;
 
 `gencode_formatted.bed` - preprocessed GENCODE v19 annotation file containing gene intervals.
+
+## Contacts
+
+Please contact Yury Barbitoff [barbitoff at bioinf.institute] if you have inquiries regarding the repository contents.
