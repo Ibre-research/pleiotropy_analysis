@@ -19,3 +19,9 @@ To run the analysis pipeline, you will need Python >= 3.10 and R >= 4.3. To set 
 `preliminary_analysis.ipynb` - the preliminary analysis file that was used to construct the merged dataset from all sources;
 
 `databases` - a folder containing individual data files used to construct the merged dataset;
+
+`panUKB_GWAS_matrix.ipynb` - the notebook used to pre-process pan-UK Biobank GWAS data and create the gene x trait cluster association matrix;
+
+`iHS_DRC150_codepieces.ipynb` - preliminary analysis file for pre-processing of raw iHS and DRC150 data and creation of locus-wise iHS/DRC150 estimatesl
+
+`selected_panukb_sumstats.txt` - a list of pan-UK Biobank GWAS datasets selected for analysis using the respective $$h^2$$ values.
