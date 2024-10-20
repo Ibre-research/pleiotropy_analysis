@@ -22,7 +22,7 @@ Make sure to decompress any compressed files in the `databases/` folder in case 
 
 `preliminary_analysis.ipynb` - the preliminary analysis file that was used to construct the merged dataset from all sources;
 
-`databases` - a folder containing individual data files used to construct the merged dataset;
+`databases` - a folder containing individual data files used to construct the merged dataset. The folder also includes two notebook files, `term_clustering.ipynb` and `dataset_consolidation.ipynb`, that were used to preprocess HPO and MGD to create a single table of gene-term associations;
 
 `panUKB_GWAS_matrix.ipynb` - the notebook used to pre-process pan-UK Biobank GWAS data and create the gene x trait cluster association matrix;
 
