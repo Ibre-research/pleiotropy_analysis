@@ -36,10 +36,10 @@ library(msigdbr)
 mypal = matlab.like2(10000)
 my_ggrect <- element_rect(color='black', fill='#f5f5f5')
 setwd("/media/barbitoff/DATA/Working issues/BI_Science/Systems Genetics/HPO_Pleiotropy/Pleiotropy paper")
-#load(".RData")
+load(".RData")
 ```
 
-## Initial imports and exports
+## Initial data import and export
 
 The main dataset consists of a single dataframe with integrated data (produced during preliminary analysis steps).
 
@@ -47,39 +47,6 @@ The main dataset consists of a single dataframe with integrated data (produced d
 merged_data <- read.table('updated_general_HPO_table.tsv', 
                           sep='\t', header=T)
 colnames(merged_data)
-```
-
-After basic import, we will immediately export the network of gene-trait connections for modularity analysis. This is performed conditionally, as the process is relatively long.
-
-```{r}
-human_map = data.frame(gene = NA, term = NA)
-mouse_map = data.frame(gene = NA, term = NA)
-export_network = FALSE
-if (export_network) {
-  for (i in 1:nrow(merged_data)) {
-    print(i)
-    human_gene = merged_data[i, "gene_human"]
-    mouse_gene = merged_data[i, "gene_mouse"]
-    murine_terms = merged_data[i, "MP_high_level"]
-    human_terms = merged_data[i, "HP_high_level"]
-    if (murine_terms != "") {
-      term_set = str_match_all(murine_terms, "MP:\\d+")[[1]][, 1]
-      for (tg_term in term_set) {
-        mouse_map <- rbind(mouse_map, c(mouse_gene, tg_term))
-      }
-    }
-    if (human_terms != "") {
-      term_set = str_match_all(human_terms, "MP:\\d+")[[1]][, 1]
-      for (tg_term in term_set) {
-        human_map <- rbind(human_map, c(human_gene, tg_term))
-      }
-    }
-  }
-  write.table(na.omit(human_map), file='hpo_netowrk.txt', sep='\t', 
-              col.names=F, row.names=F, quote=F)
-  write.table(na.omit(mouse_map), file='mgd_netowrk.txt', sep='\t', 
-              col.names=F, row.names=F, quote=F)
-}
 ```
 
 Besides, we export the GO term tables (for usage in another parts of the project).
@@ -263,6 +230,63 @@ print(pleio_puk_nomono)
 print(pleio_puk_nomono/sum(!non_pleio_or_missing(merged_data$pleio_degree)))
 # Proportion of HPO and MGD pleiotropic that are not
 # pleiotropic in pan-UKB
+```
+
+### Network modularity analysis
+
+In this section, we will compute the modularity of the bipartite gene-trait networks using `igraph`. The initial implementation used `BRIM`, but the method has no stable implementation in either R or Python.
+
+We will first run the analysis for pan-UKB (using the precomputed incidence matrix exported from Python), and then proceed to PO data.
+
+```{r}
+panukb_edges <- read.table('panUKB_closest_edgelist.txt',
+                               sep='\t', header=F)
+colnames(panukb_edges) = c('gene', 'cluster')
+
+get_modularity <- function(edgelist_df) {
+  incidence_matr <- table(edgelist_df)
+  myg <- igraph::graph_from_biadjacency_matrix(incidence_matr,
+                      mode=c("all"))
+  myfc <- igraph::cluster_fast_greedy(myg)
+  print(igraph::modularity(myfc))
+}
+
+get_modularity(panukb_edges)
+```
+
+Here, we will do the same for the ontology data, but first converting the information we have into an edge list.
+
+```{r}
+create_edgelist <- function(term_col='MP_high_level',
+                             gene_col='gene_mouse',
+                             full_df=merged_data) {
+  df_snippet <- full_df[, c(term_col, gene_col)]
+  get_all_nodes <- function(input_value, what_ret='term') {
+    term_list = input_value[1]
+    gene_name = input_value[2]
+    if (is.na(term_list) || term_list == "") {
+      return(c())
+    }
+    term_set = str_match_all(term_list, "MP:\\d+")[[1]][, 1]
+    if (what_ret == 'term') {
+      return(term_set)
+    } else {
+      return(rep(gene_name, length(term_set)))
+    }
+  }
+  all_terms <- unlist(apply(df_snippet, 1, function(x)
+    get_all_nodes(x, 'term'), simplify = T))
+  all_genes <- unlist(apply(df_snippet, 1, function(x)
+    get_all_nodes(x, 'gene'), simplify = T))
+  edgelist_df <- data.frame(term=all_terms,
+                            gene=all_genes)
+  return(edgelist_df)
+}
+mgd_edgelist <- create_edgelist()
+get_modularity(mgd_edgelist)
+hpo_edgelist <- create_edgelist('HP_high_level', 'gene_human')
+get_modularity(hpo_edgelist)
+
 ```
 
 ### SN - distributions for different ways of GWAS data processing
@@ -655,8 +679,18 @@ plot_feature <- function(feature_name, axis_lab, ax_lim=NA, log_scale=FALSE,
     names(chisq_pvals) = source_names
     print(chisq_pvals)
     
+    insert_asterisks <- function(this_src, 
+                                 pvals=chisq_pvals) {
+      asterisks <- ifelse(pvals[this_src] < 0.001,
+            '***', ifelse(pvals[this_src] < 0.01,
+            '**', ifelse(pvals[this_src] < 0.05, 
+            '*', 'n.s.')))
+      return(paste0(this_src, ' (', asterisks, ')'))
+    }
     cutoff_df <- melt(cutoff_stats, measure.vars=c('no', 'yes'),
                       id.vars=c('group', 'dataset'))
+    cutoff_df$dataset = sapply(cutoff_df$dataset,
+                               insert_asterisks)
     prop_plot <- ggplot(cutoff_df, aes(x=group, y=value, fill=variable)) +
       geom_bar(stat='identity', col='black') + theme_bw() +
       xlab('Pleiotropy group') + ylab('Proportion of genes') +
@@ -791,7 +825,7 @@ plot_grid(count_plot, ppi_plot, gobp_plot, phaplo_plot,
           ncol=1, labels=c('a', 'b', 'c', 'd'), label_size = 20)
 ```
 
-## GO term enrichment analysis
+## Gene set enrichment analysis
 
 ### Basic enrichment testing
 
@@ -801,12 +835,24 @@ First, we define function for running the enrichment:
 
 ```{r}
 # Conveniences for EA
+extract_dbname <- function(x, gs_sizes) {
+  gs_size = gs_sizes[x]
+  db_name <- str_match(x, 'KEGG|REACTOME|PID|BIOCARTA|WP|HALLMARK')[, 1]
+  gs_name <- tolower(substr(x, str_length(db_name) + 2, 
+                            str_length(x)))
+  gs_name <- gsub('_', ' ', gs_name)
+  gs_size_str <- paste0('(n=', gs_size, ')')
+  return(paste(db_name, gs_name, gs_size_str, sep=' '))
+}
 make_enrichment_plot <- function(gene_list, orgdb_name,
                                  ontology, plot_title,
                                  data_source="PO",
                                  use_t2g=FALSE,
-                                 t2g_df=NA) {
+                                 t2g_df=NA,
+                                 gs_sizes=NA) {
   if (use_t2g) {
+    t2g_df$gs_name = sapply(t2g_df$gs_name, function(x)
+                extract_dbname(x, gs_sizes))
     ego <- enricher(gene = gene_list, 
                     TERM2GENE = t2g_df,
                     pvalueCutoff = 0.05,
@@ -874,14 +920,6 @@ mouse_cc <- make_enrichment_plot(hip_genes_mgd_mm, "org.Mm.eg.db", 'CC',
 print(mouse_cc$plot)
 ```
 
-```{r}
-#| fig-show: hide
-# Extended Data Figure 5-7 (8 * 10 each)
-plot_grid(human_bp$plot, mouse_bp$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
-plot_grid(human_mf$plot, mouse_mf$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
-plot_grid(human_cc$plot, mouse_cc$plot, nrow=2, labels=c('a', 'b'), label_size = 20)
-```
-
 The same for pan-UKB data (we separate it from the rest because we should bear in mind that GSEA in GWAS may be biased by linkage disequilibrium).
 
 ```{r}
@@ -899,8 +937,13 @@ print(puk_cc$plot)
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure ?8
-plot_grid(puk_bp$plot, puk_cc$plot, puk_mf$plot, nrow=3, labels=c('a', 'b', 'c'), label_size=22)
+# Extended Data Figure 7-9 (8 * 10 each)
+plot_grid(human_bp$plot, mouse_bp$plot, puk_bp$plot,
+          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
+plot_grid(human_mf$plot, mouse_mf$plot, puk_mf$plot,
+          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
+plot_grid(human_cc$plot, mouse_cc$plot, puk_cc$plot,
+          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
 ```
 
 ### Hallmark and canonical pathway analysis
@@ -936,6 +979,9 @@ cp_mouse_t2g = msigdbr(species = "mouse", category = "C2") %>%
        dplyr::filter(gs_subcat != 'CGP') %>%
        dplyr::distinct(gs_name, gene_symbol) %>% 
        as.data.frame()
+
+gs_sizes <- c(table(cp_human_t2g$gs_name),
+              table(hallmark_human_t2g$gs_name))
 ```
 
 #### Raw H and CP testing
@@ -945,16 +991,19 @@ Now, we run the plain EA using the hallmarks:
 ```{r}
 human_hall <- make_enrichment_plot(hip_genes_hpo,  "MSigDB",
                      "H", 'Hallmarks (human)', use_t2g = TRUE,
-                     t2g_df=hallmark_human_t2g)
+                     t2g_df=hallmark_human_t2g,
+                     gs_sizes=gs_sizes)
 print(human_hall$plot)
 mouse_hall <- make_enrichment_plot(hip_genes_mgd_mm, "MSigDB",
                      "H", 'Hallmarks (mouse)', use_t2g = TRUE,
-                     t2g_df=hallmark_mouse_t2g)
+                     t2g_df=hallmark_mouse_t2g,
+                     gs_sizes=gs_sizes)
 print(mouse_hall$plot)
 puk_hall <- make_enrichment_plot(hip_genes_puk, "MSigDB",
                      "H", 'Hallmarks (GWAS)', use_t2g = TRUE,
                      t2g_df=hallmark_human_t2g,
-                     data_source = "GWAS")
+                     data_source = "GWAS",
+                     gs_sizes=gs_sizes)
 print(puk_hall$plot)
 ```
 
@@ -963,15 +1012,15 @@ There are virtually no overlapping enriched gene sets, except for the `HALLMARK 
 ```{r}
 human_cp <- make_enrichment_plot(hip_genes_hpo,  "MSigDB",
               "CP", 'Canonical pathways (human)', use_t2g = TRUE,
-              t2g_df=cp_human_t2g)
+              t2g_df=cp_human_t2g, gs_sizes=gs_sizes)
 print(human_cp$plot)
 mouse_cp <- make_enrichment_plot(hip_genes_mgd_mm, "MSigDB",
               "CP", 'Canonical pathways (mouse)', use_t2g = TRUE,
-              t2g_df=cp_mouse_t2g)
+              t2g_df=cp_mouse_t2g, gs_sizes=gs_sizes)
 print(mouse_cp$plot)
 puk_cp <- make_enrichment_plot(hip_genes_puk, "MSigDB",
               "CP", 'Canonical pathways (GWAS)', use_t2g = TRUE,
-              t2g_df=cp_human_t2g,
+              t2g_df=cp_human_t2g, gs_sizes=gs_sizes,
               data_source = "GWAS")
 print(puk_cp$plot)
 ```
@@ -980,10 +1029,10 @@ Some additional code for the figure export:
 
 ```{r}
 #| fig-show: hide
-# Additional figure with hallmark sets
+# Extended Data Figure 5
 plot_grid(human_hall$plot, mouse_hall$plot, puk_hall$plot,
           nrow=3, labels=c('a', 'b', 'c'), label_size=22)
-# Additional figure with canonical pathways sets
+# Extended Data Figure 6ss
 plot_grid(human_cp$plot, mouse_cp$plot, puk_cp$plot,
           nrow=3, labels=c('a', 'b', 'c'), label_size=22)
 ```
@@ -1003,6 +1052,7 @@ max_indep_gs <- function(t2g_df, gene_cutoff=15000,
   next_iteration = TRUE
   indep_gs_set <- c()
   seen_genes <- c()
+  init_gs_gene_counts <- table(t2g_df$gs_name)
   while (next_iteration) {
     gs_gene_counts = table(t2g_df$gs_name)
     largest_gs <- names(gs_gene_counts)[which.max(gs_gene_counts)]
@@ -1010,8 +1060,11 @@ max_indep_gs <- function(t2g_df, gene_cutoff=15000,
                                'gene_symbol']
     seen_genes <- c(seen_genes, largest_gs_genes)
     indep_gs_set <- c(indep_gs_set, largest_gs)
-    print(paste(largest_gs, length(largest_gs_genes), 
-          length(indep_gs_set), length(seen_genes), sep=' '))
+    # Logging
+    print(noquote(paste(length(indep_gs_set),
+          largest_gs, init_gs_gene_counts[largest_gs],
+          length(largest_gs_genes),
+          length(seen_genes), sep=' ')))
     t2g_df <- t2g_df[!(t2g_df$gene_symbol %in% largest_gs_genes), ]
     if (length(seen_genes) >= gene_cutoff || 
         nrow(t2g_df) == 0 ||
@@ -1035,15 +1088,15 @@ Following the construction of this set of pathways, we now run the EA against it
 ```{r}
 human_indepcp <- make_enrichment_plot(hip_genes_hpo,  "MSigDB",
         "CPindep", 'CP-independent (human)', use_t2g = TRUE,
-        t2g_df=cp_indep_human_t2g)
+        t2g_df=cp_indep_human_t2g, gs_sizes=gs_sizes)
 print(human_indepcp$plot)
 mouse_indepcp <- make_enrichment_plot(hip_genes_mgd_mm, "MSigDB",
         "CPindep", 'CP-independent (mouse)', use_t2g = TRUE,
-        t2g_df=cp_indep_mouse_t2g)
+        t2g_df=cp_indep_mouse_t2g, gs_sizes=gs_sizes)
 print(mouse_indepcp$plot)
 puk_indepcp <- make_enrichment_plot(hip_genes_puk, "MSigDB",
         "CPindep", 'CP-independent (GWAS)', use_t2g = TRUE,
-        t2g_df=cp_indep_human_t2g,
+        t2g_df=cp_indep_human_t2g, gs_sizes=gs_sizes,
         data_source = "GWAS")
 print(puk_indepcp$plot)
 ```
@@ -1177,12 +1230,15 @@ Exporting the updated Extended data figure with term Venns.
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure ?9
-plot_grid(venn_terms_cc, venn_terms_ccuq, 
+# Extended Data Figure 10
+plot_grid(venn_terms_bp, venn_terms_bpuq, 
+          NULL, NULL,
+          venn_terms_cc, venn_terms_ccuq, 
           NULL, NULL,
           venn_terms_mf, venn_terms_mfuq,
-          nrow=3, labels=c('a', 'b', '', '', 'c', 'd'),
-          rel_heights = c(1, 0.2, 1))
+          nrow=5, labels=c('a', 'b', '', '', 'c', 'd',
+                           '', '', 'e', 'f'),
+          rel_heights = c(1, 0.2, 1, 0.2, 1))
 ```
 
 We can also do the same for the CP pathway set:
@@ -1190,13 +1246,16 @@ We can also do the same for the CP pathway set:
 ```{r}
 hpouq_cp <- make_enrichment_plot(hip_hpo_no_puk,  "MSigDB",
               "CP", 'Canonical pathways (human)', use_t2g = TRUE,
-              t2g_df=cp_human_t2g, data_source = "POUQ")
+              t2g_df=cp_human_t2g, data_source = "POUQ",
+                     gs_sizes=gs_sizes)
 mgduq_cp <- make_enrichment_plot(hip_mgd_no_puk, "MSigDB",
               "CP", 'Canonical pathways (mouse)', use_t2g = TRUE,
-              t2g_df=cp_mouse_t2g, data_source = "POUQ")
+              t2g_df=cp_mouse_t2g, data_source = "POUQ",
+                     gs_sizes=gs_sizes)
 pukuq_cp <- make_enrichment_plot(hip_puk_no_mono, "MSigDB",
               "CP", 'Canonical pathways (GWAS)', use_t2g = TRUE,
-              t2g_df=cp_human_t2g, data_source = "GWASUQ")
+              t2g_df=cp_human_t2g, data_source = "GWASUQ",
+                     gs_sizes=gs_sizes)
 venn_cp_uq <- ggvenn(list('HPO' = hpouq_cp$df$ID, 
                           'MGD' = mgduq_cp$df$ID,
                           'panUKB' = pukuq_cp$df$ID),
@@ -1226,10 +1285,9 @@ I will now combine the plots into the figure panels:
 fig3_venns <- plot_grid(venn_terms_bp, venn_terms_bpuq,
                         nrow=1, labels=c('a', 'b'),
                         label_size = 20)
-term_venns_cc_mf <- plot_grid(venn_terms_cc, venn_terms_ccuq,
-                        venn_terms_mf, venn_terms_mfuq,
-                        nrow=2, labels=c('a', 'b', 'c', 'd'),
-                        label_size=20)
+fig3_alt_venns <- plot_grid(venn_cp, venn_cp_uq,
+                            nrow=1, labels=c('a', 'b'),
+                            label_size=20)
 ```
 
 ### Analysis of per-term pleiotropic genes fraction
@@ -1334,7 +1392,7 @@ sharing_corrs$rho_coeff <- round(c(bp_sharing$test.result$estimate,
 And then we construct a combined plot of the results with the correlation coefficients in the corners:
 
 ```{r}
-# Extended Data Figure ?10
+# Additional Figure (not in text)
 go_term_sharing_all <- ggplot(all_sharing_df, aes(x=perc_hpo, y=perc_panukb)) +
   geom_hex(bins=20, col='black', lwd=0.3) + theme_bw() +
   geom_text(data=sharing_corrs, aes(label=rho_coeff), size = 3) +
@@ -1363,7 +1421,8 @@ annotate_gene_percent <- function(enrich_df) {
 }
 
 make_top10_plot <- function(hpo_df, mgd_df, 
-                            gwas_df, path_size_cut=0) {
+                            gwas_df, 
+                            path_size_cut=0) {
   hpo_df <- annotate_gene_percent(hpo_df)
   mgd_df <- annotate_gene_percent(mgd_df)
   gwas_df <- annotate_gene_percent(gwas_df)
@@ -1372,11 +1431,25 @@ make_top10_plot <- function(hpo_df, mgd_df,
   all_df <- all_df[all_df$K.x >= path_size_cut, c('ID', 'Description', 'perc_enrich.x',
                           'perc_enrich.y', 'perc_enrich')]
   colnames(all_df) = c('ID', 'Description', 'HPO', 'MGD', 'panUKB')
+  add_line_break <- function(x, col_lim=40) {
+    x <- as.character(x)
+    if (str_length(x) > col_lim) {
+      x_words <- strsplit(x, ' ')[[1]]
+      word_cut = ceiling(length(x_words)/2)
+      first_half <- paste(x_words[1:word_cut], collapse=' ')
+      second_half <- paste(x_words[(word_cut + 1):length(x_words)],
+                           collapse=' ')
+      return(paste(first_half, second_half, sep='\n'))
+    } else {
+      return(x)
+    }
+  }
+  all_df$Description = sapply(all_df$Description, add_line_break)
   all_df$min_perc <- apply(all_df[, 3:5], 1, min)
   all_df <- all_df[order(all_df$min_perc, decreasing = T), ]
   all_df$Description = factor(as.character(all_df$Description),
                           levels=all_df$Description[order(all_df$min_perc)])
-  print(colnames(all_df))
+  #print(colnames(all_df))
   
   all_df <- melt(head(all_df, 10), id.vars=c('ID', 'Description', 'min_perc'))
   top10_ret_plot <- ggplot(all_df, aes(x=Description, 
@@ -1402,21 +1475,36 @@ shared_top10_mf <- make_top10_plot(human_mf$df, mouse_mf$df,
 print(shared_top10_mf)
 ```
 
+Now let's make the plots with CPs (both all, with pathway size cutoff, and filtered).
+
+```{r}
+shared_top10_cp <- make_top10_plot(human_cp$df, mouse_cp$df,
+            puk_cp$df, path_size_cut = 200)
+print(shared_top10_cp)
+
+shared_top_indepcp <- make_top10_plot(human_indepcp$df,
+                        mouse_indepcp$df, puk_indepcp$df,
+                        path_size_cut = 0)
+print(shared_top_indepcp)
+```
+
 And then we plot a combined figure (as well as an Extended Data Figure) \[also excluded from Qmd output\]:
 
 ```{r}
 #| fig-show: hide
-# Figure (3? - placement is yet uncertain) - 6 * 8 in portrait
+# Figure 3 [two alt variants] - 6 * 8 in portrait
 plot_grid(fig3_venns, shared_top10_bp,
+          labels=c('', 'c'), label_size=20, 
+          nrow=2, rel_heights = c(0.7, 1))
+plot_grid(fig3_alt_venns, shared_top_indepcp,
           labels=c('', 'c'), label_size=20, 
           nrow=2, rel_heights = c(0.7, 1))
 
 
-# Extended Data Figure ?11
-plot_grid(plot_grid(NULL, shared_top10_cc, nrow=1, labels=c('a', ''),
-                    label_size=20, rel_widths = c(0.3, 1)), 
-          shared_top10_mf, nrow=2, 
-          labels=c('', 'b'), label_size=20)
+# Extended Data Figure 11
+plot_grid(shared_top10_bp, shared_top10_cc, 
+          shared_top10_mf, nrow=3, 
+          labels=c('a', 'b', 'c'), label_size=20)
 ```
 
 ### Searching for god pathway examples
@@ -1471,13 +1559,16 @@ ihs_loeuf <- ggplot(merged_data[!(is.na(merged_data$high_iHS)), ],
        aes(x=high_iHS, y=oe_lof_upper, fill=high_iHS)) +
   geom_violin(scale = "width", col='black') + 
   geom_boxplot(width=0.2, fill='white', col='black') +
-  theme_bw()
+  theme_bw() + xlab("iHS > 4") + guides(fill=F) +
+  ylab('LOEUF')
 merged_data$high_drc <- (merged_data$max_drc_150 > 0.0025)
 drc_loeuf <- ggplot(merged_data[!(is.na(merged_data$high_drc)), ], 
        aes(x=high_drc, y=oe_lof_upper, fill=high_drc)) +
   geom_violin(scale = "width", col='black') + 
   geom_boxplot(width=0.2, fill='white', col='black') +
-  theme_bw()
+  theme_bw() + xlab("DRC150 > 0.0025") + guides(fill=F) +
+  ylab('LOEUF')
+# Extended Data Figure 16
 plot_grid(ihs_loeuf, drc_loeuf, nrow=1)
 aggregate(gene_human~high_iHS+high_drc, merged_data, length)
 
@@ -1579,7 +1670,7 @@ Exporting extended data figure:
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure ?12
+# Extended Data Figure 13
 plot_grid(pli_plot, missense_plot, nrow=2, labels=c('a', 'b'), label_size=20)
 ```
 
@@ -1629,7 +1720,7 @@ plot_grid(phastcons_cds_plot, loeuf_plot, # phastcons_plot,
           nrow=3, labels=c('a', 'b', ''), label_size=20,
           rel_heights = c(0.62, 0.62, 1))
 
-# Extended Data Figure ?14
+# Extended Data Figure 14
 plot_grid(ihs_plot, drc_plot, nrow=2, labels=c('a', 'b'), label_size=24)
 ```
 
@@ -1658,7 +1749,7 @@ And plotting the extended data figure with the locus-wise positive and negative 
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure ?13
+# Extended Data Figure 12
 plot_grid(phc_locus_plot, ihs_locus_plot, drc_locus_plot, 
           phc_locus_prop_plot, ihs_locus_prop_plot, drc_locus_prop_plot, 
           nrow=2, labels=c('a', 'b', 'c', 'd', 'e', 'f'), label_size=20,
@@ -1686,6 +1777,6 @@ sum(merged_data$bidirectional_b, na.rm=T)/length(na.omit(merged_data$bidirection
 bidir_drc <- plot_feature('bidirectional_b', '', cutoff=0.5, 
                           cut_name='Bidirectional?')
 
-# Extended Data Figure ?15
+# Extended Data Figure 15
 plot_grid(bidir_ihs, bidir_drc, nrow=1, labels=c('a', 'b'), label_size = 20)
 ```
