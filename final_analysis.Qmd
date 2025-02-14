@@ -35,8 +35,8 @@ library(msigdbr)
 
 mypal = matlab.like2(10000)
 my_ggrect <- element_rect(color='black', fill='#f5f5f5')
-setwd("/media/barbitoff/DATA/Working issues/BI_Science/Systems Genetics/HPO_Pleiotropy/Pleiotropy paper")
-load(".RData")
+setwd("/mnt/data/work/systems_genetics/HPO_Pleiotropy/Pleiotropy paper/mbe_revision/pleiotropy_analysis/")
+#load(".RData")
 ```
 
 ## Initial data import and export

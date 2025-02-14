@@ -175,8 +175,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>mypal <span class="ot">=</span> <span class="fu">matlab.like2</span>(<span class="dv">10000</span>)</span>
 <span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>my_ggrect <span class="ot">&lt;-</span> <span class="fu">element_rect</span>(<span class="at">color=</span><span class="st">'black'</span>, <span class="at">fill=</span><span class="st">'#f5f5f5'</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/media/barbitoff/DATA/Working issues/BI_Science/Systems Genetics/HPO_Pleiotropy/Pleiotropy paper"</span>)</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">".RData"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"/mnt/data/work/systems_genetics/HPO_Pleiotropy/Pleiotropy paper/mbe_revision/pleiotropy_analysis/"</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#load(".RData")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="initial-data-import-and-export" class="level2">
@@ -261,7 +261,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">plot_grid</span>(mouse_cnt_plot, <span class="cn">NULL</span>, <span class="at">rel_heights=</span><span class="fu">c</span>(<span class="dv">1</span>, <span class="fl">0.3</span>), <span class="at">nrow=</span><span class="dv">2</span>),</span>
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">nrow=</span><span class="dv">1</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">label_size=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 669 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 448 rows containing non-finite outside the scale range
 (`stat_bin()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -269,7 +269,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 (`geom_bar()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 1348 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 1035 rows containing non-finite outside the scale range
 (`stat_bin()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
@@ -290,22 +290,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(value<span class="sc">~</span>variable, human_counts, <span class="cf">function</span>(x) <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        variable value
-1      all_terms     7
+1      all_terms   116
 2       clusters   119
-3 hp_upper_terms   287
-4 mp_upper_terms   287</code></pre>
+3 hp_upper_terms   293
+4 mp_upper_terms   293</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(value<span class="sc">~</span>variable, mouse_counts, <span class="cf">function</span>(x) <span class="fu">sum</span>(x <span class="sc">==</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     variable value
-1   all_terms  1290
+1   all_terms  1277
 2    clusters  1001
-3 upper_terms  1409</code></pre>
+3 upper_terms  1605</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(value<span class="sc">~</span>variable, human_counts, median)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        variable value
-1      all_terms    40
+1      all_terms    34
 2       clusters    33
 3 hp_upper_terms    12
 4 mp_upper_terms    11</code></pre>
@@ -313,9 +313,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">aggregate</span>(value<span class="sc">~</span>variable, mouse_counts, median)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     variable value
-1   all_terms    10
+1   all_terms     8
 2    clusters    10
-3 upper_terms     5</code></pre>
+3 upper_terms     4</code></pre>
 </div>
 </div>
 <p>Now we check the overlap between sets of non-pleiotropic genes when using different ways of pleiotropy definition:</p>
@@ -330,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>mouse_upper_np <span class="ot">&lt;-</span> <span class="fu">na.omit</span>(merged_data<span class="sc">$</span>gene_mouse[merged_data<span class="sc">$</span>MP_high_count <span class="sc">==</span> <span class="dv">1</span>])</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">intersect</span>(mouse_clus_np, mouse_upper_np))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 846</code></pre>
+<pre><code>[1] 533</code></pre>
 </div>
 </div>
 <p>Given the above data, we can conclude that clustering of terms does not seem beneficial compared to using raw lower-level terms or (especially) upper-level terms.</p>
@@ -344,7 +344,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">'HPO upper-level terms'</span>) <span class="sc">+</span></span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'MP upper-level terms'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 23114 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 23074 rows containing non-finite outside the scale range
 (`stat_binhex()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -362,7 +362,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(<span class="fu">length</span>(hip_human_hp), <span class="fu">length</span>(hip_human_mp), </span>
 <span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">length</span>(<span class="fu">intersect</span>(hip_human_hp, hip_human_mp))))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1109 1173 1013</code></pre>
+<pre><code>[1] 1243 1139 1047</code></pre>
 </div>
 </div>
 </section>
@@ -417,7 +417,7 @@ of ggplot2 3.3.4.</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>  variable value
 1      HPO    11
-2      MGD     5
+2      MGD     4
 3   panUKB     1</code></pre>
 </div>
 </div>
@@ -427,17 +427,17 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(assoc_cnt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>HP_high_count MP_high_count  pleio_degree 
-        53406         82715         13932 </code></pre>
+        52849         67958         13932 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(assoc_cnt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 150053</code></pre>
+<pre><code>[1] 134739</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>gene_cnt <span class="ot">&lt;-</span> <span class="fu">colSums</span>(merged_data[, pdeg_cols] <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm =</span> T)</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gene_cnt)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>HP_high_count MP_high_count  pleio_degree 
-         4999         13301          6649 </code></pre>
+         4999         12834          6649 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>non_pleio_or_missing <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sapply</span>(x, <span class="cf">function</span>(elt)</span>
@@ -449,25 +449,25 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>    merged_data<span class="sc">$</span>pleio_degree <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm=</span>T)</span>
 <span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(have_assoc_all)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1236</code></pre>
+<pre><code>[1] 1216</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>have_assoc_both_dom <span class="ot">&lt;-</span> <span class="fu">sum</span>((merged_data<span class="sc">$</span>HP_high_count <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> </span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>     merged_data<span class="sc">$</span>MP_high_count <span class="sc">&gt;</span> <span class="dv">0</span>) <span class="sc">&amp;</span></span>
 <span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a>     merged_data<span class="sc">$</span>pleio_degree <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="at">na.rm=</span>T)</span>
 <span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(have_assoc_both_dom)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 3188</code></pre>
+<pre><code>[1] 3129</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>have_assoc_mono <span class="ot">&lt;-</span> <span class="fu">sum</span>((merged_data<span class="sc">$</span>HP_high_count <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">|</span> </span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>       merged_data<span class="sc">$</span>MP_high_count <span class="sc">&gt;</span> <span class="dv">0</span>), <span class="at">na.rm=</span>T)</span>
 <span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(have_assoc_mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 13894</code></pre>
+<pre><code>[1] 13562</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>pleio_mono <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">non_pleio_or_missing</span>(merged_data<span class="sc">$</span>HP_high_count) <span class="sc">|</span> <span class="sc">!</span><span class="fu">non_pleio_or_missing</span>(merged_data<span class="sc">$</span>MP_high_count), <span class="at">na.rm=</span>T)</span>
 <span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 12654</code></pre>
+<pre><code>[1] 12172</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many are pleiotropic in pan-UKB, but have no HPO/MGD</span></span>
 <span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>pleio_puk_notinmono <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(merged_data<span class="sc">$</span>HP_high_count) <span class="sc">&amp;</span> </span>
@@ -475,7 +475,7 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    merged_data<span class="sc">$</span>pleio_degree <span class="sc">&gt;</span> <span class="dv">1</span>, <span class="at">na.rm=</span>T)</span>
 <span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_puk_notinmono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1307</code></pre>
+<pre><code>[1] 1338</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># How many are uniquely pleiotropic in domains</span></span>
 <span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>pleio_mono_nopuk <span class="ot">&lt;-</span> <span class="fu">sum</span>(</span>
@@ -484,11 +484,11 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">non_pleio_or_missing</span>(merged_data<span class="sc">$</span>pleio_degree), <span class="at">na.rm=</span>T)</span>
 <span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_mono_nopuk)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 11163</code></pre>
+<pre><code>[1] 10713</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_mono_nopuk<span class="sc">/</span>pleio_mono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.8821716</code></pre>
+<pre><code>[1] 0.8801347</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>pleio_puk_nomono <span class="ot">&lt;-</span> <span class="fu">sum</span>(</span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  (<span class="fu">non_pleio_or_missing</span>(merged_data<span class="sc">$</span>HP_high_count) <span class="sc">&amp;</span></span>
@@ -498,11 +498,11 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb60-7"><a href="#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_puk_nomono)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1404</code></pre>
+<pre><code>[1] 1436</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pleio_puk_nomono<span class="sc">/</span><span class="fu">sum</span>(<span class="sc">!</span><span class="fu">non_pleio_or_missing</span>(merged_data<span class="sc">$</span>pleio_degree)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.4849741</code></pre>
+<pre><code>[1] 0.4960276</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportion of HPO and MGD pleiotropic that are not</span></span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pleiotropic in pan-UKB</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -560,12 +560,12 @@ of ggplot2 3.3.4.</code></pre>
 <span id="cb67-26"><a href="#cb67-26" aria-hidden="true" tabindex="-1"></a>mgd_edgelist <span class="ot">&lt;-</span> <span class="fu">create_edgelist</span>()</span>
 <span id="cb67-27"><a href="#cb67-27" aria-hidden="true" tabindex="-1"></a><span class="fu">get_modularity</span>(mgd_edgelist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.2049915</code></pre>
+<pre><code>[1] 0.2194291</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>hpo_edgelist <span class="ot">&lt;-</span> <span class="fu">create_edgelist</span>(<span class="st">'HP_high_level'</span>, <span class="st">'gene_human'</span>)</span>
 <span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">get_modularity</span>(hpo_edgelist)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1175664</code></pre>
+<pre><code>[1] 0.1290752</code></pre>
 </div>
 </div>
 </section>
@@ -787,7 +787,7 @@ names were found from a short variable and have been discarded</code></pre>
 <span id="cb116-12"><a href="#cb116-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">'Degree of pleiotropy (dataset B)'</span>)</span>
 <span id="cb116-13"><a href="#cb116-13" aria-hidden="true" tabindex="-1"></a>pdeg_scatters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 73 rows containing missing values or values outside the scale range
+<pre><code>Warning: Removed 70 rows containing missing values or values outside the scale range
 (`geom_hex()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -800,7 +800,7 @@ names were found from a short variable and have been discarded</code></pre>
 <div class="sourceCode cell-code" id="cb118"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb118-1"><a href="#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjusted p-values</span></span>
 <span id="cb118-2"><a href="#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="fu">p.adjust</span>(<span class="fu">unique</span>(pdeg_corrs<span class="sc">$</span>pval), <span class="at">method=</span><span class="st">'fdr'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 9.016189e-80 9.075826e-02 5.860877e-06</code></pre>
+<pre><code>[1] 2.446309e-64 8.867899e-02 5.796742e-08</code></pre>
 </div>
 </div>
 </section>
@@ -813,14 +813,14 @@ names were found from a short variable and have been discarded</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 FALSE  TRUE 
-25908  2205 </code></pre>
+25868  2205 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb122"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb122-1"><a href="#cb122-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="sc">!</span>(<span class="fu">is.na</span>(merged_data<span class="sc">$</span>pleio_degree)) <span class="sc">&amp;</span> </span>
 <span id="cb122-2"><a href="#cb122-2" aria-hidden="true" tabindex="-1"></a>        <span class="sc">!</span>(<span class="fu">is.na</span>(merged_data<span class="sc">$</span>HP_high_count)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 FALSE  TRUE 
-26771  1342 </code></pre>
+26731  1342 </code></pre>
 </div>
 </div>
 <p>Next, we collect sets of all pleiotropic genes for all datasets, including those analyzed for SN.</p>
@@ -901,7 +901,7 @@ FALSE  TRUE
 <span id="cb131-14"><a href="#cb131-14" aria-hidden="true" tabindex="-1"></a>hip_hpo_or_mgd <span class="ot">&lt;-</span> <span class="fu">union</span>(hip_genes_hpo, hip_genes_mgd)</span>
 <span id="cb131-15"><a href="#cb131-15" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">intersect</span>(hip_hpo_or_mgd, hip_genes_puk))<span class="sc">/</span><span class="fu">length</span>(hip_hpo_or_mgd)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.1024505</code></pre>
+<pre><code>[1] 0.1022821</code></pre>
 </div>
 </div>
 <p>And then make Venn diagrams for the highly pleiotropic genes similar to those for all pleiotropic genes.</p>
@@ -1201,11 +1201,11 @@ FALSE  TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
 1     none     HPO       4           NA
-2 moderate     HPO      20 1.402725e-14
-3     high     HPO      30 1.365130e-21
-4     none     MGD      14           NA
-5 moderate     MGD      18 4.247981e-02
-6     high     MGD      27 3.132382e-10
+2 moderate     HPO      21 9.817019e-15
+3     high     HPO      30 1.661041e-21
+4     none     MGD      15           NA
+5 moderate     MGD      17 3.705324e-02
+6     high     MGD      25 2.353902e-09
 7     none  panUKB       3           NA
 8 moderate  panUKB       5 3.301445e-03
 9     high  panUKB       9 2.350018e-10</code></pre>
@@ -1222,15 +1222,15 @@ FALSE  TRUE
 <span id="cb149-2"><a href="#cb149-2" aria-hidden="true" tabindex="-1"></a>median_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'median_exp'</span>, <span class="st">'Median TPM'</span>, <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset   feature       pvalue
-1     none     HPO  1.456920           NA
-2 moderate     HPO  8.126970 2.634813e-14
-3     high     HPO 11.291900 2.318760e-24
-4     none     MGD  6.429845           NA
-5 moderate     MGD  7.302270 1.210310e-01
-6     high     MGD 10.091550 6.026550e-12
+1     none     HPO  1.494620           NA
+2 moderate     HPO  8.168280 3.396730e-14
+3     high     HPO 11.143400 3.286262e-24
+4     none     MGD  6.204780           NA
+5 moderate     MGD  6.851410 6.313828e-02
+6     high     MGD  9.501420 7.632826e-11
 7     none  panUKB  1.511925           NA
 8 moderate  panUKB  2.458080 7.741982e-04
-9     high  panUKB  4.113065 6.026550e-12</code></pre>
+9     high  panUKB  4.113065 6.768056e-12</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb151"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb151-1"><a href="#cb151-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(median_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1243,15 +1243,15 @@ FALSE  TRUE
 <div class="sourceCode cell-code" id="cb152"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb152-1"><a href="#cb152-1" aria-hidden="true" tabindex="-1"></a>mean_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'mean_exp'</span>, <span class="st">'Mean TPM'</span>, <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset   feature       pvalue
-1     none     HPO  5.093295           NA
-2 moderate     HPO 12.754541 7.420115e-14
-3     high     HPO 14.251538 7.896658e-19
-4     none     MGD 10.098887           NA
-5 moderate     MGD 11.327107 2.041048e-03
-6     high     MGD 13.967338 4.888883e-14
+1     none     HPO  5.318151           NA
+2 moderate     HPO 12.778534 1.725503e-13
+3     high     HPO 14.210800 1.516462e-18
+4     none     MGD  9.909849           NA
+5 moderate     MGD 10.904693 1.343556e-03
+6     high     MGD 13.177751 2.947027e-12
 7     none  panUKB  3.964699           NA
 8 moderate  panUKB  5.511277 9.613684e-04
-9     high  panUKB  7.388683 3.557039e-13</code></pre>
+9     high  panUKB  7.388683 4.742718e-13</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb154"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb154-1"><a href="#cb154-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(mean_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1264,12 +1264,12 @@ FALSE  TRUE
 <div class="sourceCode cell-code" id="cb155"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb155-1"><a href="#cb155-1" aria-hidden="true" tabindex="-1"></a>max_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'max_exp'</span>, <span class="st">'Max. TPM across tissues'</span>, <span class="dv">500</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset  feature       pvalue
-1     none     HPO 36.47840           NA
-2 moderate     HPO 54.97700 5.819882e-06
-3     high     HPO 55.25420 3.665608e-06
-4     none     MGD 43.30230           NA
-5 moderate     MGD 52.40920 5.819882e-06
-6     high     MGD 56.75015 5.893575e-12
+1     none     HPO 36.78670           NA
+2 moderate     HPO 54.95360 9.747426e-06
+3     high     HPO 55.25420 5.878366e-06
+4     none     MGD 43.41115           NA
+5 moderate     MGD 53.01040 1.499747e-06
+6     high     MGD 54.70150 4.369727e-10
 7     none  panUKB 22.20375           NA
 8 moderate  panUKB 28.37405 4.250960e-04
 9     high  panUKB 36.32205 2.452488e-13</code></pre>
@@ -1297,12 +1297,12 @@ FALSE  TRUE
 <span id="cb159-2"><a href="#cb159-2" aria-hidden="true" tabindex="-1"></a>ppi_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'n_interactions'</span>, <span class="st">'PPI count'</span>, <span class="at">ax_lim =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
-1     none     HPO    42.5           NA
-2 moderate     HPO    77.0 2.995998e-08
-3     high     HPO   127.0 1.568844e-26
-4     none     MGD    45.0           NA
-5 moderate     MGD    63.0 2.535619e-07
-6     high     MGD   101.0 2.588423e-43
+1     none     HPO    43.5           NA
+2 moderate     HPO    77.0 3.622682e-08
+3     high     HPO   128.0 4.765542e-27
+4     none     MGD    51.0           NA
+5 moderate     MGD    59.0 6.241482e-05
+6     high     MGD    93.0 2.750231e-35
 7     none  panUKB    63.0           NA
 8 moderate  panUKB    68.0 2.421352e-01
 9     high  panUKB    68.5 3.271614e-01</code></pre>
@@ -1319,12 +1319,12 @@ FALSE  TRUE
 <span id="cb162-2"><a href="#cb162-2" aria-hidden="true" tabindex="-1"></a>phaplo_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'pHaplo'</span>, <span class="st">'pHaplo'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
-1     none     HPO  0.3940           NA
-2 moderate     HPO  0.5500 1.038795e-05
-3     high     HPO  0.6230 1.717107e-08
-4     none     MGD  0.3970           NA
-5 moderate     MGD  0.4880 2.252063e-11
-6     high     MGD  0.7180 5.160259e-75
+1     none     HPO  0.3880           NA
+2 moderate     HPO  0.5500 3.654469e-06
+3     high     HPO  0.6250 2.370295e-09
+4     none     MGD  0.4015           NA
+5 moderate     MGD  0.4820 1.065608e-09
+6     high     MGD  0.6870 1.861436e-65
 7     none  panUKB  0.4810           NA
 8 moderate  panUKB  0.5315 1.611097e-03
 9     high  panUKB  0.5770 5.459135e-08</code></pre>
@@ -1342,14 +1342,14 @@ FALSE  TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
 1     none     HPO   0.397           NA
-2 moderate     HPO   0.483 3.401672e-04
-3     high     HPO   0.541 2.059738e-07
-4     none     MGD   0.381           NA
-5 moderate     MGD   0.438 2.718627e-07
-6     high     MGD   0.600 9.493411e-49
+2 moderate     HPO   0.483 2.084036e-04
+3     high     HPO   0.540 9.857980e-08
+4     none     MGD   0.384           NA
+5 moderate     MGD   0.432 1.357584e-05
+6     high     MGD   0.569 1.228880e-39
 7     none  panUKB   0.431           NA
 8 moderate  panUKB   0.477 5.977485e-02
-9     high  panUKB   0.490 2.605045e-04</code></pre>
+9     high  panUKB   0.490 2.084036e-04</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb167"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb167-1"><a href="#cb167-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ptriplo_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1465,15 +1465,15 @@ FALSE  TRUE
 <span id="cb180-16"><a href="#cb180-16" aria-hidden="true" tabindex="-1"></a>                          <span class="at">mouse_feature =</span> <span class="st">'gobp_cnt_mouse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature        pvalue
-1     none     HPO     6.5            NA
-2 moderate     HPO     8.0  3.562672e-04
-3     high     HPO    10.0  1.368270e-13
-4     none     MGD     4.0            NA
-5 moderate     MGD     7.0  7.513510e-78
-6     high     MGD    16.0 1.000965e-286
-7     none  panUKB     6.0            NA
-8 moderate  panUKB     7.0  1.557990e-01
-9     high  panUKB     8.0  6.174089e-07</code></pre>
+1     none     HPO       7            NA
+2 moderate     HPO       8  3.833720e-04
+3     high     HPO      11  7.762019e-14
+4     none     MGD       5            NA
+5 moderate     MGD       8  6.323620e-54
+6     high     MGD      16 6.123561e-225
+7     none  panUKB       6            NA
+8 moderate  panUKB       7  1.672906e-01
+9     high  panUKB       8  1.885034e-07</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb182"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb182-1"><a href="#cb182-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gobp_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1488,14 +1488,14 @@ FALSE  TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature        pvalue
 1     none     HPO       4            NA
-2 moderate     HPO       5  2.464275e-04
-3     high     HPO       6  1.971476e-12
+2 moderate     HPO       5  5.116815e-04
+3     high     HPO       6  3.762418e-12
 4     none     MGD       3            NA
-5 moderate     MGD       5  5.142912e-31
-6     high     MGD       8 1.201897e-159
+5 moderate     MGD       5  1.502730e-22
+6     high     MGD       7 1.047615e-122
 7     none  panUKB       4            NA
-8 moderate  panUKB       4  6.345944e-01
-9     high  panUKB       5  5.679261e-08</code></pre>
+8 moderate  panUKB       5  5.865025e-01
+9     high  panUKB       5  1.417926e-08</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb185"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb185-1"><a href="#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gomf_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1508,16 +1508,16 @@ FALSE  TRUE
 <div class="sourceCode cell-code" id="cb186"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb186-1"><a href="#cb186-1" aria-hidden="true" tabindex="-1"></a>gocc_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'gocc_cnt_human'</span>, <span class="st">'GO CC count'</span>, <span class="at">ax_lim=</span><span class="dv">50</span>,</span>
 <span id="cb186-2"><a href="#cb186-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">mouse_feature =</span> <span class="st">'gocc_cnt_mouse'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     group dataset feature        pvalue
-1     none     HPO     5.0            NA
-2 moderate     HPO     6.0  5.224356e-04
-3     high     HPO     7.0  1.752513e-13
-4     none     MGD     4.0            NA
-5 moderate     MGD     5.0  1.276869e-32
-6     high     MGD     8.0 3.622835e-113
-7     none  panUKB     5.0            NA
-8 moderate  panUKB     5.0  8.234485e-01
-9     high  panUKB     5.5  9.862957e-03</code></pre>
+<pre><code>     group dataset feature       pvalue
+1     none     HPO       5           NA
+2 moderate     HPO       7 2.285156e-04
+3     high     HPO       8 5.099180e-14
+4     none     MGD       4           NA
+5 moderate     MGD       6 1.581933e-29
+6     high     MGD       8 1.508641e-97
+7     none  panUKB       5           NA
+8 moderate  panUKB       5 7.548168e-01
+9     high  panUKB       6 5.768577e-03</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb188"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb188-1"><a href="#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gocc_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1535,11 +1535,11 @@ FALSE  TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>     group         dataset feature       pvalue
 1     none          panUKB       6           NA
-2 moderate          panUKB       7 2.077320e-01
-3     high          panUKB       8 1.646424e-06
+2 moderate          panUKB       7 2.230541e-01
+3     high          panUKB       8 5.026756e-07
 4     none panUKB_maxindep       7           NA
-5 moderate panUKB_maxindep       7 9.704026e-01
-6     high panUKB_maxindep       8 6.992070e-05</code></pre>
+5 moderate panUKB_maxindep       7 8.236643e-01
+6     high panUKB_maxindep       8 5.062776e-05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb191"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb191-1"><a href="#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gobp_plot_mi)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -1554,11 +1554,11 @@ FALSE  TRUE
 <div class="cell-output cell-output-stdout">
 <pre><code>     group    dataset feature       pvalue
 1     none     panUKB       6           NA
-2 moderate     panUKB       7 1.557990e-01
-3     high     panUKB       8 1.646424e-06
-4     none panUKB_all       5           NA
-5 moderate panUKB_all       6 1.557990e-01
-6     high panUKB_all       6 9.064580e-06</code></pre>
+2 moderate     panUKB       7 1.672906e-01
+3     high     panUKB       8 5.026756e-07
+4     none panUKB_all       6           NA
+5 moderate panUKB_all       6 1.593670e-01
+6     high panUKB_all       6 1.038684e-05</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb194"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb194-1"><a href="#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(gobp_plot_lw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2029,11 +2029,11 @@ FALSE  TRUE
 <div class="cell">
 <div class="sourceCode cell-code" id="cb226"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb226-1"><a href="#cb226-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(human_indepcp<span class="sc">$</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 32</code></pre>
+<pre><code>[1] 33</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb228"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb228-1"><a href="#cb228-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mouse_indepcp<span class="sc">$</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 32</code></pre>
+<pre><code>[1] 29</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb230"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb230-1"><a href="#cb230-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(puk_indepcp<span class="sc">$</span>df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -2048,8 +2048,8 @@ FALSE  TRUE
 [4] "WP malignant pleural mesothelioma (n=446)"                                                        
 [5] "WP vegfavegfr2 signaling pathway (n=438)"                                                         
 [6] "REACTOME mapk family signaling cascades (n=327)"                                                  
-[7] "REACTOME extracellular matrix organization (n=301)"                                               
-[8] "REACTOME hemostasis (n=678)"                                                                      </code></pre>
+[7] "REACTOME hemostasis (n=678)"                                                                      
+[8] "REACTOME extracellular matrix organization (n=301)"                                               </code></pre>
 </div>
 </div>
 </section>
@@ -2062,29 +2062,29 @@ FALSE  TRUE
 <span id="cb234-2"><a href="#cb234-2" aria-hidden="true" tabindex="-1"></a>common_bp <span class="ot">&lt;-</span> <span class="fu">intersect</span>(human_bp<span class="sc">$</span>df<span class="sc">$</span>ID, puk_bp<span class="sc">$</span>df<span class="sc">$</span>ID)</span>
 <span id="cb234-3"><a href="#cb234-3" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_bp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 1104</code></pre>
+<pre><code>[1] 1159</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb236"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb236-1"><a href="#cb236-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_bp)<span class="sc">/</span><span class="fu">min</span>(<span class="fu">nrow</span>(human_bp<span class="sc">$</span>df), <span class="fu">nrow</span>(puk_bp<span class="sc">$</span>df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.7976879</code></pre>
+<pre><code>[1] 0.8037448</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb238"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb238-1"><a href="#cb238-1" aria-hidden="true" tabindex="-1"></a>common_mf <span class="ot">&lt;-</span> <span class="fu">intersect</span>(human_mf<span class="sc">$</span>df<span class="sc">$</span>ID, puk_mf<span class="sc">$</span>df<span class="sc">$</span>ID)</span>
 <span id="cb238-2"><a href="#cb238-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_mf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 73</code></pre>
+<pre><code>[1] 74</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb240"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb240-1"><a href="#cb240-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_mf)<span class="sc">/</span><span class="fu">min</span>(<span class="fu">nrow</span>(human_mf<span class="sc">$</span>df), <span class="fu">nrow</span>(puk_mf<span class="sc">$</span>df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.5</code></pre>
+<pre><code>[1] 0.5034014</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb242"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb242-1"><a href="#cb242-1" aria-hidden="true" tabindex="-1"></a>common_cc <span class="ot">&lt;-</span> <span class="fu">intersect</span>(human_cc<span class="sc">$</span>df<span class="sc">$</span>ID, puk_cc<span class="sc">$</span>df<span class="sc">$</span>ID)</span>
 <span id="cb242-2"><a href="#cb242-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 48</code></pre>
+<pre><code>[1] 46</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb244"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb244-1"><a href="#cb244-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(common_cc)<span class="sc">/</span><span class="fu">min</span>(<span class="fu">nrow</span>(human_cc<span class="sc">$</span>df), <span class="fu">nrow</span>(puk_cc<span class="sc">$</span>df))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.6575342</code></pre>
+<pre><code>[1] 0.7076923</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb246"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb246-1"><a href="#cb246-1" aria-hidden="true" tabindex="-1"></a>venn_terms_bp <span class="ot">&lt;-</span> <span class="fu">ggvenn</span>(<span class="fu">list</span>(<span class="st">'HPO'</span> <span class="ot">=</span> human_bp<span class="sc">$</span>df<span class="sc">$</span>ID, </span>
 <span id="cb246-2"><a href="#cb246-2" aria-hidden="true" tabindex="-1"></a>                             <span class="st">'MGD'</span> <span class="ot">=</span> mouse_bp<span class="sc">$</span>df<span class="sc">$</span>ID,</span>
@@ -2263,13 +2263,13 @@ FALSE  TRUE
 [11] "KEGG retinol metabolism (n=64)"                          
 [12] "REACTOME butyrophilin btn family interactions (n=12)"    
 [13] "KEGG drug metabolism other enzymes (n=51)"               
-[14] "WP metapathway biotransformation phase i and ii (n=185)" 
-[15] "KEGG starch and sucrose metabolism (n=52)"               
+[14] "KEGG starch and sucrose metabolism (n=52)"               
+[15] "WP metapathway biotransformation phase i and ii (n=185)" 
 [16] "WP estrogen metabolism (n=19)"                           
-[17] "WP constitutive androstane receptor pathway (n=32)"      
-[18] "WP irinotecan pathway (n=13)"                            
-[19] "REACTOME glutathione conjugation (n=36)"                 
-[20] "WP codeine and morphine metabolism (n=15)"               
+[17] "WP irinotecan pathway (n=13)"                            
+[18] "WP constitutive androstane receptor pathway (n=32)"      
+[19] "WP codeine and morphine metabolism (n=15)"               
+[20] "REACTOME glutathione conjugation (n=36)"                 
 [21] "WP nrf2 pathway (n=145)"                                 
 [22] "WP foxa2 pathway (n=21)"                                 
 [23] "WP tamoxifen metabolism (n=21)"                          
@@ -2362,90 +2362,90 @@ FALSE  TRUE
 <div class="cell">
 <div class="sourceCode cell-code" id="cb256"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb256-1"><a href="#cb256-1" aria-hidden="true" tabindex="-1"></a>bp_sharing <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"BP"</span>, human_gotab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 12271"
-[1] "Terms with more than 1 usage : 9290"
-[1] "Terms with more than 10 usages : 3183"</code></pre>
+<pre><code>[1] "Total term count: 12255"
+[1] "Terms with more than 1 usage : 9338"
+[1] "Terms with more than 10 usages : 3240"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.159559031795149"
-[1] "Correlation p-value : 1.34632919624664e-19"</code></pre>
+<pre><code>[1] "Correlation : 0.164233874135135"
+[1] "Correlation p-value : 5.02303616740724e-21"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb260"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb260-1"><a href="#cb260-1" aria-hidden="true" tabindex="-1"></a>mf_sharing <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"MF"</span>, human_gotab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 4610"
-[1] "Terms with more than 1 usage : 3529"
-[1] "Terms with more than 10 usages : 1037"</code></pre>
+<pre><code>[1] "Total term count: 4588"
+[1] "Terms with more than 1 usage : 3566"
+[1] "Terms with more than 10 usages : 1062"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.0787677547471461"
-[1] "Correlation p-value : 0.0112070813038798"</code></pre>
+<pre><code>[1] "Correlation : 0.0944289160082761"
+[1] "Correlation p-value : 0.00207634436752865"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb264"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb264-1"><a href="#cb264-1" aria-hidden="true" tabindex="-1"></a>cc_sharing <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"CC"</span>, human_gotab)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 1811"
-[1] "Terms with more than 1 usage : 1559"
-[1] "Terms with more than 10 usages : 722"</code></pre>
+<pre><code>[1] "Total term count: 1835"
+[1] "Terms with more than 1 usage : 1576"
+[1] "Terms with more than 10 usages : 733"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.165276931828398"
-[1] "Correlation p-value : 8.0428026608881e-06"</code></pre>
+<pre><code>[1] "Correlation : 0.190993778390735"
+[1] "Correlation p-value : 1.88666273721496e-07"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb268"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb268-1"><a href="#cb268-1" aria-hidden="true" tabindex="-1"></a>bp_sharing_nocomm <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"BP"</span>, human_gotab, </span>
 <span id="cb268-2"><a href="#cb268-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">remove_common_genes=</span><span class="cn">TRUE</span>, <span class="at">ax_lim=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 12271"
-[1] "Terms with more than 1 usage : 9290"
-[1] "Terms with more than 10 usages : 3183"</code></pre>
+<pre><code>[1] "Total term count: 12255"
+[1] "Terms with more than 1 usage : 9338"
+[1] "Terms with more than 10 usages : 3240"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.0989738549767337"
-[1] "Correlation p-value : 2.20031757033559e-08"</code></pre>
+<pre><code>[1] "Correlation : 0.0998688555172869"
+[1] "Correlation p-value : 1.22157409017644e-08"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb272"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb272-1"><a href="#cb272-1" aria-hidden="true" tabindex="-1"></a>mf_sharing_nocomm <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"MF"</span>, human_gotab, </span>
 <span id="cb272-2"><a href="#cb272-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">remove_common_genes=</span><span class="cn">TRUE</span>, <span class="at">ax_lim=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 4610"
-[1] "Terms with more than 1 usage : 3529"
-[1] "Terms with more than 10 usages : 1037"</code></pre>
+<pre><code>[1] "Total term count: 4588"
+[1] "Terms with more than 1 usage : 3566"
+[1] "Terms with more than 10 usages : 1062"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.199710238810128"
-[1] "Correlation p-value : 8.8292740982504e-11"</code></pre>
+<pre><code>[1] "Correlation : 0.202519631010233"
+[1] "Correlation p-value : 2.77571896080977e-11"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb276"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb276-1"><a href="#cb276-1" aria-hidden="true" tabindex="-1"></a>cc_sharing_nocomm <span class="ot">&lt;-</span> <span class="fu">make_term_sharing_plot</span>(<span class="st">"CC"</span>, human_gotab, </span>
 <span id="cb276-2"><a href="#cb276-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">remove_common_genes=</span><span class="cn">TRUE</span>, <span class="at">ax_lim=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Total term count: 1811"
-[1] "Terms with more than 1 usage : 1559"
-[1] "Terms with more than 10 usages : 722"</code></pre>
+<pre><code>[1] "Total term count: 1835"
+[1] "Terms with more than 1 usage : 1576"
+[1] "Terms with more than 10 usages : 733"</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in cor.test.default(share_df$perc_hpo, share_df$perc_panukb, method =
 "spearman"): Cannot compute exact p-value with ties</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Correlation : 0.216527090916763"
-[1] "Correlation p-value : 4.15544568555673e-09"</code></pre>
+<pre><code>[1] "Correlation : 0.231676770747432"
+[1] "Correlation p-value : 2.17744906945972e-10"</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb280"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb280-1"><a href="#cb280-1" aria-hidden="true" tabindex="-1"></a>all_sharing_df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(bp_sharing<span class="sc">$</span>df, bp_sharing_nocomm<span class="sc">$</span>df,</span>
 <span id="cb280-2"><a href="#cb280-2" aria-hidden="true" tabindex="-1"></a>                        mf_sharing<span class="sc">$</span>df, mf_sharing_nocomm<span class="sc">$</span>df,</span>
@@ -2716,11 +2716,11 @@ FALSE  TRUE
 <span id="cb299-5"><a href="#cb299-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>(<span class="at">bins=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">scale_x_log10</span>()</span>
 <span id="cb299-6"><a href="#cb299-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(ihs_hex, drc_hex, <span class="at">nrow=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 12147 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 12107 rows containing non-finite outside the scale range
 (`stat_binhex()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 18540 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 18500 rows containing non-finite outside the scale range
 (`stat_binhex()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -2733,7 +2733,7 @@ FALSE  TRUE
 <div class="sourceCode cell-code" id="cb302"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb302-1"><a href="#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(merged_data, <span class="fu">aes</span>(<span class="at">x=</span>IHS_GBR, <span class="at">y=</span>max_drc_150)) <span class="sc">+</span></span>
 <span id="cb302-2"><a href="#cb302-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hex</span>(<span class="at">bins=</span><span class="dv">20</span>) <span class="sc">+</span> <span class="fu">scale_y_log10</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 16235 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 16195 rows containing non-finite outside the scale range
 (`stat_binhex()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -2773,12 +2773,12 @@ sample estimates:
 <span id="cb307-2"><a href="#cb307-2" aria-hidden="true" tabindex="-1"></a>phastcons_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'phast_cons'</span>, <span class="st">'phastCons score'</span>, <span class="at">ax_lim =</span> <span class="fl">0.4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset   feature       pvalue
-1     none     HPO 0.1126190           NA
-2 moderate     HPO 0.1226505 4.948109e-02
-3     high     HPO 0.1266620 7.858874e-04
-4     none     MGD 0.1163770           NA
-5 moderate     MGD 0.1205995 1.673716e-01
-6     high     MGD 0.1277830 6.926334e-06
+1     none     HPO 0.1129920           NA
+2 moderate     HPO 0.1226655 4.925363e-02
+3     high     HPO 0.1265580 1.551330e-03
+4     none     MGD 0.1165670           NA
+5 moderate     MGD 0.1202450 8.743030e-02
+6     high     MGD 0.1263165 5.115607e-05
 7     none  panUKB 0.1156760           NA
 8 moderate  panUKB 0.1151310 7.365611e-01
 9     high  panUKB 0.1139740 2.099319e-01</code></pre>
@@ -2795,17 +2795,17 @@ sample estimates:
 <span id="cb310-2"><a href="#cb310-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">cutoff=</span><span class="fl">0.25</span>, <span class="at">cut_name =</span> <span class="st">'phastCons &gt; 0.25'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.9188192 0.08118081
-2 moderate     HPO 0.8935658 0.10643416
-3     high     HPO 0.8771611 0.12283894
-4     none     MGD 0.9003466 0.09965338
-5 moderate     MGD 0.8860712 0.11392884
-6     high     MGD 0.8587418 0.14125820
+1     none     HPO 0.9169675 0.08303249
+2 moderate     HPO 0.8920048 0.10799523
+3     high     HPO 0.8819119 0.11808810
+4     none     MGD 0.9092954 0.09070465
+5 moderate     MGD 0.8822703 0.11772970
+6     high     MGD 0.8701207 0.12987935
 7     none  panUKB 0.9012638 0.09873618
 8 moderate  panUKB 0.9172553 0.08274470
 9     high  panUKB 0.9312796 0.06872038
-         HPO          MGD       panUKB 
-0.0684868757 0.0005386491 0.0026462448 </code></pre>
+        HPO         MGD      panUKB 
+0.121529241 0.000304159 0.002646245 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb312"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb312-1"><a href="#cb312-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(phastcons_prop_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2822,17 +2822,17 @@ sample estimates:
 <div class="cell-output cell-output-stdout">
 <pre><code>
 FALSE  TRUE 
-16353 11760 </code></pre>
+16353 11720 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb315"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb315-1"><a href="#cb315-1" aria-hidden="true" tabindex="-1"></a>phastcons_cds_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'phastcons_cds'</span>, <span class="st">'phastCons score (CDS)'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset   feature       pvalue
 1     none     HPO 0.6319786           NA
-2 moderate     HPO 0.6600213 2.528179e-03
-3     high     HPO 0.6630846 2.126167e-03
-4     none     MGD 0.6426310           NA
-5 moderate     MGD 0.6512887 1.407062e-01
-6     high     MGD 0.6776440 2.947792e-12
+2 moderate     HPO 0.6600254 1.500824e-03
+3     high     HPO 0.6634396 1.151004e-03
+4     none     MGD 0.6423878           NA
+5 moderate     MGD 0.6482582 3.045509e-02
+6     high     MGD 0.6705932 5.152349e-14
 7     none  panUKB 0.6419464           NA
 8 moderate  panUKB 0.6489354 1.407062e-01
 9     high  panUKB 0.6470419 6.882000e-01</code></pre>
@@ -2849,17 +2849,17 @@ FALSE  TRUE
 <span id="cb318-2"><a href="#cb318-2" aria-hidden="true" tabindex="-1"></a>                                    <span class="at">cutoff=</span><span class="fl">0.6</span>, <span class="at">cut_name =</span> <span class="st">'phastCons &gt; 0.6'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no       yes
-1     none     HPO 0.4063745 0.5936255
-2 moderate     HPO 0.3127169 0.6872831
-3     high     HPO 0.2909441 0.7090559
-4     none     MGD 0.3878292 0.6121708
-5 moderate     MGD 0.3527086 0.6472914
-6     high     MGD 0.2693523 0.7306477
+1     none     HPO 0.4046693 0.5953307
+2 moderate     HPO 0.3129699 0.6870301
+3     high     HPO 0.2893954 0.7106046
+4     none     MGD 0.3891934 0.6108066
+5 moderate     MGD 0.3619757 0.6380243
+6     high     MGD 0.2811245 0.7188755
 7     none  panUKB 0.3839791 0.6160209
 8 moderate  panUKB 0.3648352 0.6351648
 9     high  panUKB 0.3947144 0.6052856
          HPO          MGD       panUKB 
-5.364246e-04 1.366621e-12 5.638245e-01 </code></pre>
+4.957765e-04 8.699096e-12 5.638245e-01 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb320"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb320-1"><a href="#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(phastcons_cds_prop_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -2918,12 +2918,12 @@ panUKB (locus-wise)
 <div class="sourceCode cell-code" id="cb327"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb327-1"><a href="#cb327-1" aria-hidden="true" tabindex="-1"></a>loeuf_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'oe_lof_upper'</span>, <span class="st">'LOEUF'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
-1     none     HPO  0.9140           NA
-2 moderate     HPO  0.7010 3.603264e-09
-3     high     HPO  0.6225 6.098680e-15
-4     none     MGD  0.8955           NA
-5 moderate     MGD  0.7700 3.084817e-11
-6     high     MGD  0.5220 2.818897e-72
+1     none     HPO  0.9110           NA
+2 moderate     HPO  0.7020 5.255443e-09
+3     high     HPO  0.6100 3.643460e-15
+4     none     MGD  0.8875           NA
+5 moderate     MGD  0.7780 1.938213e-10
+6     high     MGD  0.5560 1.512462e-64
 7     none  panUKB  0.7680           NA
 8 moderate  panUKB  0.6850 1.493969e-04
 9     high  panUKB  0.6340 1.116080e-09</code></pre>
@@ -2989,16 +2989,16 @@ panUKB (locus-wise)
 <div class="cell">
 <div class="sourceCode cell-code" id="cb338"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb338-1"><a href="#cb338-1" aria-hidden="true" tabindex="-1"></a>pli_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'pLI'</span>, <span class="st">'pLI'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>     group dataset    feature       pvalue
-1     none     HPO 0.00001073           NA
-2 moderate     HPO 0.00407580 3.183604e-08
-3     high     HPO 0.01399150 5.155383e-09
-4     none     MGD 0.00027267           NA
-5 moderate     MGD 0.00263920 6.900677e-08
-6     high     MGD 0.21890000 2.457579e-45
-7     none  panUKB 0.00285660           NA
-8 moderate  panUKB 0.00795720 5.985650e-02
-9     high  panUKB 0.01156800 9.359437e-03</code></pre>
+<pre><code>     group dataset     feature       pvalue
+1     none     HPO 0.000012270           NA
+2 moderate     HPO 0.003901100 4.061910e-08
+3     high     HPO 0.016534500 2.069501e-09
+4     none     MGD 0.000320495           NA
+5 moderate     MGD 0.002287000 1.122764e-07
+6     high     MGD 0.121080000 4.998474e-41
+7     none  panUKB 0.002856600           NA
+8 moderate  panUKB 0.007957200 5.985650e-02
+9     high  panUKB 0.011568000 9.359437e-03</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb340"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb340-1"><a href="#cb340-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pli_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3011,17 +3011,17 @@ panUKB (locus-wise)
 <div class="sourceCode cell-code" id="cb341"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb341-1"><a href="#cb341-1" aria-hidden="true" tabindex="-1"></a>pli_prop_plot <span class="ot">&lt;-</span> <span class="fu">plot_feature</span>(<span class="st">'pLI'</span>, <span class="st">'pLI'</span>, <span class="at">cutoff=</span><span class="fl">0.9</span>, <span class="at">cut_name =</span> <span class="st">"pLI &gt; 0.9"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no       yes
-1     none     HPO 0.8517110 0.1482890
-2 moderate     HPO 0.7674767 0.2325233
-3     high     HPO 0.7036364 0.2963636
-4     none     MGD 0.8679577 0.1320423
-5 moderate     MGD 0.8067109 0.1932891
-6     high     MGD 0.6680786 0.3319214
+1     none     HPO 0.8550186 0.1449814
+2 moderate     HPO 0.7680857 0.2319143
+3     high     HPO 0.6985019 0.3014981
+4     none     MGD 0.8742424 0.1257576
+5 moderate     MGD 0.8091928 0.1908072
+6     high     MGD 0.6878326 0.3121674
 7     none  panUKB 0.8062084 0.1937916
 8 moderate  panUKB 0.7591565 0.2408435
 9     high  panUKB 0.7368421 0.2631579
          HPO          MGD       panUKB 
-1.632317e-06 2.096110e-36 4.033743e-06 </code></pre>
+3.561460e-07 1.215209e-37 4.033743e-06 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb343"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb343-1"><a href="#cb343-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(pli_prop_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3035,22 +3035,22 @@ panUKB (locus-wise)
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset  feature       pvalue
 1     none     HPO 0.486640           NA
-2 moderate     HPO 0.851550 4.167020e-07
-3     high     HPO 1.028000 2.815733e-09
-4     none     MGD 0.728450           NA
-5 moderate     MGD 0.800410 2.934358e-03
-6     high     MGD 1.200550 3.774132e-29
+2 moderate     HPO 0.851400 4.284157e-07
+3     high     HPO 1.036150 2.232119e-09
+4     none     MGD 0.703810           NA
+5 moderate     MGD 0.792605 2.136672e-03
+6     high     MGD 1.103600 1.375763e-23
 7     none  panUKB 0.791660           NA
 8 moderate  panUKB 0.933140 1.141033e-02
 9     high  panUKB 0.994775 2.819876e-04</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb346"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb346-1"><a href="#cb346-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(missense_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 3833 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3798 rows containing non-finite outside the scale range
 (`stat_ydensity()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 3833 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3798 rows containing non-finite outside the scale range
 (`stat_boxplot()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -3066,11 +3066,11 @@ panUKB (locus-wise)
 <div class="sourceCode cell-code" id="cb349"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb349-1"><a href="#cb349-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extended Data Figure 13</span></span>
 <span id="cb349-2"><a href="#cb349-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(pli_plot, missense_plot, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">label_size=</span><span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 3833 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3798 rows containing non-finite outside the scale range
 (`stat_ydensity()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 3833 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 3798 rows containing non-finite outside the scale range
 (`stat_boxplot()`).</code></pre>
 </div>
 </div>
@@ -3083,22 +3083,22 @@ panUKB (locus-wise)
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset feature       pvalue
 1     none     HPO  2.1600           NA
-2 moderate     HPO  2.2035 4.604508e-01
-3     high     HPO  2.1705 8.593415e-01
-4     none     MGD  2.1135           NA
-5 moderate     MGD  2.1340 7.842225e-02
-6     high     MGD  2.3270 9.274244e-09
+2 moderate     HPO  2.1990 6.137592e-01
+3     high     HPO  2.1730 8.495069e-01
+4     none     MGD  2.1560           NA
+5 moderate     MGD  2.1330 6.137592e-01
+6     high     MGD  2.3200 2.185949e-06
 7     none  panUKB  2.1280           NA
-8 moderate  panUKB  2.3325 8.003359e-07
+8 moderate  panUKB  2.3325 1.200504e-06
 9     high  panUKB  2.4440 1.464951e-20</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb354"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb354-1"><a href="#cb354-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ihs_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 79 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 75 rows containing non-finite outside the scale range
 (`stat_ydensity()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 79 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 75 rows containing non-finite outside the scale range
 (`stat_boxplot()`).</code></pre>
 </div>
 <div class="cell-output-display">
@@ -3112,17 +3112,17 @@ panUKB (locus-wise)
 <span id="cb357-2"><a href="#cb357-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">cutoff=</span><span class="dv">4</span>, <span class="at">cut_name=</span><span class="st">'iHS &gt; 4'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.9051383 0.09486166
-2 moderate     HPO 0.8928791 0.10712093
-3     high     HPO 0.8925234 0.10747664
-4     none     MGD 0.9236842 0.07631579
-5 moderate     MGD 0.8990601 0.10093987
-6     high     MGD 0.8786693 0.12133072
+1     none     HPO 0.9073359 0.09266409
+2 moderate     HPO 0.8924436 0.10755637
+3     high     HPO 0.8932692 0.10673077
+4     none     MGD 0.9143939 0.08560606
+5 moderate     MGD 0.9000143 0.09998565
+6     high     MGD 0.8789625 0.12103746
 7     none  panUKB 0.9025352 0.09746479
 8 moderate  panUKB 0.8839009 0.11609907
 9     high  panUKB 0.8548708 0.14512922
          HPO          MGD       panUKB 
-6.351486e-01 5.728520e-05 1.085217e-06 </code></pre>
+5.823259e-01 8.419166e-04 1.085217e-06 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb359"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb359-1"><a href="#cb359-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ihs_prop_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3136,17 +3136,17 @@ panUKB (locus-wise)
 <span id="cb360-2"><a href="#cb360-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_feature</span>(<span class="st">'IHS_GBR'</span>, <span class="st">'iHS score'</span>, <span class="at">cutoff=</span><span class="dv">5</span>, <span class="at">cut_name=</span><span class="st">'iHS &gt; 5'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.9644269 0.03557312
-2 moderate     HPO 0.9600982 0.03990178
-3     high     HPO 0.9672897 0.03271028
-4     none     MGD 0.9780702 0.02192982
-5 moderate     MGD 0.9611175 0.03888245
-6     high     MGD 0.9561644 0.04383562
+1     none     HPO 0.9652510 0.03474903
+2 moderate     HPO 0.9600853 0.03991469
+3     high     HPO 0.9673077 0.03269231
+4     none     MGD 0.9765152 0.02348485
+5 moderate     MGD 0.9624157 0.03758428
+6     high     MGD 0.9538905 0.04610951
 7     none  panUKB 0.9645070 0.03549296
 8 moderate  panUKB 0.9582043 0.04179567
 9     high  panUKB 0.9483101 0.05168986
-        HPO         MGD      panUKB 
-0.973317832 0.001573642 0.009291383 </code></pre>
+         HPO          MGD       panUKB 
+1.0000000000 0.0006337151 0.0092913832 </code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -3162,17 +3162,17 @@ incorrect</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no         yes
-1     none     HPO 0.9881423 0.011857708
-2 moderate     HPO 0.9892572 0.010742787
-3     high     HPO 0.9934579 0.006542056
-4     none     MGD 0.9956140 0.004385965
-5 moderate     MGD 0.9902150 0.009784988
-6     high     MGD 0.9866928 0.013307241
+1     none     HPO 0.9884170 0.011583012
+2 moderate     HPO 0.9893358 0.010664229
+3     high     HPO 0.9932692 0.006730769
+4     none     MGD 0.9939394 0.006060606
+5 moderate     MGD 0.9903888 0.009611247
+6     high     MGD 0.9870317 0.012968300
 7     none  panUKB 0.9915493 0.008450704
 8 moderate  panUKB 0.9922601 0.007739938
 9     high  panUKB 0.9874089 0.012591120
        HPO        MGD     panUKB 
-0.63525275 0.02280088 0.22292246 </code></pre>
+0.68756052 0.06546461 0.22292246 </code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -3191,12 +3191,12 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset     feature       pvalue
-1     none     HPO 0.001626550           NA
-2 moderate     HPO 0.001700115 5.584576e-01
-3     high     HPO 0.001685855 6.718877e-01
-4     none     MGD 0.001691360           NA
-5 moderate     MGD 0.001670390 7.838812e-01
-6     high     MGD 0.001675820 7.838812e-01
+1     none     HPO 0.001630830           NA
+2 moderate     HPO 0.001700670 4.136855e-01
+3     high     HPO 0.001681800 6.034231e-01
+4     none     MGD 0.001700995           NA
+5 moderate     MGD 0.001669580 2.525861e-01
+6     high     MGD 0.001675820 2.525861e-01
 7     none  panUKB 0.001681470           NA
 8 moderate  panUKB 0.001745460 8.617103e-03
 9     high  panUKB 0.001798020 1.856129e-08</code></pre>
@@ -3213,17 +3213,17 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <span id="cb369-2"><a href="#cb369-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">cutoff=</span><span class="fl">0.0025</span>, <span class="at">cut_name=</span><span class="st">'DRC150 &gt; 0.0025'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.8852459 0.11475410
-2 moderate     HPO 0.8946360 0.10536398
-3     high     HPO 0.8782991 0.12170088
-4     none     MGD 0.9069424 0.09305761
-5 moderate     MGD 0.9000000 0.10000000
-6     high     MGD 0.8991031 0.10089686
+1     none     HPO 0.8770053 0.12299465
+2 moderate     HPO 0.8952880 0.10471204
+3     high     HPO 0.8781955 0.12180451
+4     none     MGD 0.9005038 0.09949622
+5 moderate     MGD 0.8990340 0.10096596
+6     high     MGD 0.9002090 0.09979101
 7     none  panUKB 0.8968289 0.10317106
 8 moderate  panUKB 0.8600000 0.14000000
 9     high  panUKB 0.8302387 0.16976127
          HPO          MGD       panUKB 
-8.976905e-01 6.125089e-01 4.908649e-08 </code></pre>
+1.000000e+00 1.000000e+00 4.908649e-08 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb371"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb371-1"><a href="#cb371-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(drc_prop_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -3265,11 +3265,11 @@ Adding another scale for y, which will replace the existing scale.</code></pre>
 <div class="sourceCode cell-code" id="cb381"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb381-1"><a href="#cb381-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extended Data Figure 14</span></span>
 <span id="cb381-2"><a href="#cb381-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(ihs_plot, drc_plot, <span class="at">nrow=</span><span class="dv">2</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">label_size=</span><span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 79 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 75 rows containing non-finite outside the scale range
 (`stat_ydensity()`).</code></pre>
 </div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: Removed 79 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 75 rows containing non-finite outside the scale range
 (`stat_boxplot()`).</code></pre>
 </div>
 </div>
@@ -3382,17 +3382,17 @@ panUKB (locus-wise)
 <span id="cb402-2"><a href="#cb402-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cut_name=</span><span class="st">'Bidirectional?'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.9578544 0.04214559
-2 moderate     HPO 0.9402223 0.05977771
-3     high     HPO 0.9387569 0.06124314
-4     none     MGD 0.9662630 0.03373702
-5 moderate     MGD 0.9494489 0.05055112
-6     high     MGD 0.9190550 0.08094500
+1     none     HPO 0.9588015 0.04119850
+2 moderate     HPO 0.9403875 0.05961252
+3     high     HPO 0.9378531 0.06214689
+4     none     MGD 0.9639910 0.03600900
+5 moderate     MGD 0.9500000 0.05000000
+6     high     MGD 0.9198147 0.08018532
 7     none  panUKB 0.9681218 0.03187823
 8 moderate  panUKB 0.9542226 0.04577743
 9     high  panUKB 0.9296346 0.07036536
          HPO          MGD       panUKB 
-2.972458e-01 1.231435e-07 1.835683e-09 </code></pre>
+2.447415e-01 1.268357e-07 1.835683e-09 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb404"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb404-1"><a href="#cb404-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Overlapping signatures (based on DRC150)</span></span>
 <span id="cb404-2"><a href="#cb404-2" aria-hidden="true" tabindex="-1"></a>merged_data<span class="sc">$</span>bidirectional_b <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(merged_data<span class="sc">$</span>max_drc_150 <span class="sc">&gt;</span> <span class="fl">0.0025</span> <span class="sc">&amp;</span></span>
@@ -3411,17 +3411,17 @@ panUKB (locus-wise)
 <span id="cb408-2"><a href="#cb408-2" aria-hidden="true" tabindex="-1"></a>                          <span class="at">cut_name=</span><span class="st">'Bidirectional?'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     group dataset        no        yes
-1     none     HPO 0.9836066 0.01639344
-2 moderate     HPO 0.9672245 0.03277545
-3     high     HPO 0.9515086 0.04849138
-4     none     MGD 0.9844055 0.01559454
-5 moderate     MGD 0.9747690 0.02523104
-6     high     MGD 0.9456275 0.05437245
+1     none     HPO 0.9838710 0.01612903
+2 moderate     HPO 0.9671621 0.03283788
+3     high     HPO 0.9510567 0.04894327
+4     none     MGD 0.9815591 0.01844091
+5 moderate     MGD 0.9742510 0.02574899
+6     high     MGD 0.9515327 0.04846727
 7     none  panUKB 0.9790007 0.02099928
 8 moderate  panUKB 0.9662813 0.03371869
 9     high  panUKB 0.9449253 0.05507474
          HPO          MGD       panUKB 
-4.042914e-02 5.214400e-07 1.718220e-08 </code></pre>
+3.523842e-02 1.590048e-05 1.718220e-08 </code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb410"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb410-1"><a href="#cb410-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extended Data Figure 15</span></span>
 <span id="cb410-2"><a href="#cb410-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot_grid</span>(bidir_ihs, bidir_drc, <span class="at">nrow=</span><span class="dv">1</span>, <span class="at">labels=</span><span class="fu">c</span>(<span class="st">'a'</span>, <span class="st">'b'</span>), <span class="at">label_size =</span> <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
