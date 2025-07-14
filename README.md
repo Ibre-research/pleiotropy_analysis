@@ -16,7 +16,7 @@ Make sure to decompress any compressed files in the `databases/` folder in case 
 
 ## Repository contents
 
-`final_analysis.Qmd` - the main analysis file used to generate all figures and comparisons presented in the article;
+`final_analysis_withfg.Qmd` - the main analysis file used to generate all figures and comparisons presented in the article;
 
 `updated_general_HPO_table.tsv` - the main merged data file used for final anaalysis.
 
@@ -24,11 +24,13 @@ Make sure to decompress any compressed files in the `databases/` folder in case 
 
 `databases` - a folder containing individual data files used to construct the merged dataset. The folder also includes two notebook files, `term_clustering.ipynb` and `dataset_consolidation.ipynb`, that were used to preprocess HPO and MGD to create a single table of gene-term associations;
 
-`panUKB_GWAS_matrix.ipynb` - the notebook used to pre-process pan-UK Biobank GWAS data and create the gene x trait cluster association matrix;
+`{panUKB,finngen}_GWAS_matrix.ipynb` - the notebooks used to pre-process pan-UK Biobank and FinnGen r12 GWAS data and create the gene x trait cluster association matrix;
 
-`iHS_DRC150_codepieces.ipynb` - preliminary analysis file for pre-processing of raw iHS and DRC150 data and creation of locus-wise iHS/DRC150 estimatesl
+`{panUKB,finngen}_iHS_DRC150_codepieces.ipynb` - preliminary analysis file for pre-processing of raw iHS and DRC150 data and creation of locus-wise iHS/DRC150 estimates for pan-UKB and FinnGen datasets;
 
 `selected_panukb_sumstats.txt` - a list of pan-UK Biobank GWAS datasets selected for analysis using the respective $$h^2$$ values;
+
+`finngen_processing` - a folder containung scripts used to retrieve and pre-process FinnGen r12 GWAS data (including coordinate mapping using UCSC liftOver, clumping, and creation of a combined dataset for phenotypic correlation analysis using PhenoSpd);
 
 `gencode_formatted.bed` - preprocessed GENCODE v19 annotation file containing gene intervals.
 

@@ -221,6 +221,7 @@ print(have_assoc_both_dom/have_assoc_ct)
 
 pleio_mono <- sum(!non_pleio_or_missing(merged_data$HP_high_count) | !non_pleio_or_missing(merged_data$MP_high_count), na.rm=T)
 print(pleio_mono)
+
 # How many are pleiotropic in pan-UKB, but have no HPO/MGD
 pleio_pukfg_notinmono <- sum(is.na(merged_data$HP_high_count) & 
     is.na(merged_data$MP_high_count) &
@@ -244,8 +245,6 @@ pleio_pukfg_nomono <- sum(
 )
 print(pleio_pukfg_nomono)
 print(pleio_pukfg_nomono/sum(!non_pleio_or_missing(merged_data$pleio_degree) | !non_pleio_or_missing(merged_data$fg_pleio_degree)))
-# Proportion of HPO and MGD pleiotropic that are not
-# pleiotropic in pan-UKB
 ```
 
 ### Network modularity analysis
@@ -497,6 +496,7 @@ mouse_gene_4venn <- ifelse(is.na(merged_data$gene_human) |
         merged_data$gene_human == "",
         merged_data$gene_mouse, merged_data$gene_human)
 pleio_genes_mgd <- na.omit(mouse_gene_4venn[merged_data$MP_high_count > 1])
+
 pleio_genes_puk <- na.omit(merged_data$gene_human[merged_data$pleio_degree > 1])
 pleio_genes_fg <- na.omit(merged_data$gene_human[merged_data$fg_pleio_degree > 1])
 
@@ -512,6 +512,25 @@ venn_pleio <- ggvenn(list('HPO' = pleio_genes_hpo, 'MGD' = pleio_genes_mgd,
        fill_color=brewer.pal(4, 'Accent'),
        show_percentage=FALSE)
 venn_pleio
+
+# Statistical evaluation
+pleio_genes_mono <- na.omit(merged_data$gene_human[
+                (merged_data$HP_high_count > 1 | 
+                merged_data$MP_high_count > 1) &
+                merged_data$gene_human != ""])
+pleio_genes_ct <- na.omit(merged_data$gene_human[
+                merged_data$pleio_degree > 1 | 
+                merged_data$fg_pleio_degree > 1])
+length(pleio_genes_mono)
+length(pleio_genes_ct)
+pleio_genes_bothdom <- intersect(pleio_genes_mono, pleio_genes_ct)
+length(pleio_genes_bothdom)
+# Universe size = all human genes
+total_human_genes = length(unique(na.omit(merged_data$gene_human[
+                merged_data$gene_human != ""])))
+phyper(length(pleio_genes_bothdom), length(pleio_genes_mono),
+       total_human_genes - length(pleio_genes_mono),
+       length(pleio_genes_ct), lower.tail=F)
 
 # Venns for SN2
 sn2_venn_pleio <- ggvenn(list('closest' = pleio_genes_puk, 
@@ -631,7 +650,7 @@ plot_grid(plot_grid(pdeg_distros, pdeg_scatters, nrow=2,
 #          labels=c('', ''),
           label_size = 20)
 
-# Figure SN2.1
+# Figure SN2.1 and SN2.3
 plot_grid(sn2_distros, sn2_venns, nrow=2, labels=c('a', ''),
           label_size=20, rel_heights = c(1, 0.7))
 plot_grid(sn2_distros_fg, sn2_venns_fg, nrow=2, labels=c('a', ''),
@@ -780,7 +799,9 @@ Finally, we make a master function to plot all features we may want to, with the
 ```{r}
 plot_feature <- function(feature_name, axis_lab, 
                          ax_lim=NA, log_scale=FALSE,
-                         mouse_feature=NA, gwas_data_file=NA, 
+                         mouse_feature=NA, 
+                         gwas_data_file=NA,
+                         gwas_data_name='panUKB (locus-wise)',
                          cutoff=NA, cut_name=NA,  
                          cut_direction='higher',
                          prop_palette="OrRd",
@@ -846,8 +867,8 @@ plot_feature <- function(feature_name, axis_lab,
                        ifelse(feat_df$group == 'moderate', 'MP', 'HP'))
     feat_df$group = factor(as.character(feat_df$group), 
                            levels=c('ST', 'MP', 'HP'))
-    feat_df$dataset <- 'panUKB (locus-wise)'
-    source_names <- 'panUKB (locus-wise)'
+    feat_df$dataset <- gwas_data_name
+    source_names <- gwas_data_name
   }
   
   summary_df <- aggregate(feature~group+dataset, feat_df, median)
@@ -1122,7 +1143,7 @@ print(max_plot)
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure 3
+# Extended Data Figure 3 - 7*7
 plot_grid(median_plot, mean_plot, max_plot, nrow=3, labels=c('a', 'b', 'c'),
           label_size=20)
 ```
@@ -1233,7 +1254,7 @@ And a plot for Extended Data (hidden from Qmd output).
 #| fig-show: hide
 # Extended Data Figure 4
 plot_grid(gocc_plot, gomf_plot, nrow=2, labels=c('a', 'b'))
-# Figure 2 -- 10 * 12 (landscape) or 9 * 9
+# Figure 2 -- 10 * 12 (landscape) or 10 * 10
 plot_grid(count_plot, ppi_plot, gobp_plot, phaplo_plot,
           ncol=1, labels=c('a', 'b', 'c', 'd'), label_size = 20)
 ```
@@ -1361,13 +1382,13 @@ print(fg_cc$plot)
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure 8-10 (8 * 10 each)
-plot_grid(human_bp$plot, mouse_bp$plot, puk_bp$plot,
-          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
-plot_grid(human_mf$plot, mouse_mf$plot, puk_mf$plot,
-          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
-plot_grid(human_cc$plot, mouse_cc$plot, puk_cc$plot,
-          nrow=3, labels=c('a', 'b', 'c'), label_size = 20)
+# Extended Data Figure 8-10 (16 * 10 each)
+plot_grid(human_bp$plot, mouse_bp$plot, puk_bp$plot, fg_bp$plot,
+          nrow=2, labels=c('a', 'b', 'c', 'd'), label_size = 22)
+plot_grid(human_mf$plot, mouse_mf$plot, puk_mf$plot, fg_mf$plot,
+          nrow=2, labels=c('a', 'b', 'c', 'd'), label_size = 22)
+plot_grid(human_cc$plot, mouse_cc$plot, puk_cc$plot, fg_cc$plot,
+          nrow=2, labels=c('a', 'b', 'c', 'd'), label_size = 22)
 ```
 
 ### Hallmark and canonical pathway analysis
@@ -1464,12 +1485,12 @@ Some additional code for the figure export:
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure 6
-plot_grid(human_hall$plot, mouse_hall$plot, puk_hall$plot,
-          nrow=3, labels=c('a', 'b', 'c'), label_size=22)
+# Extended Data Figure 6- 16 * 10 (landscape)
+plot_grid(human_hall$plot, mouse_hall$plot, puk_hall$plot, fg_hall$plot,
+          nrow=2, labels=c('a', 'b', 'c', 'd'), label_size=22)
 # Extended Data Figure 7
-plot_grid(human_cp$plot, mouse_cp$plot, puk_cp$plot,
-          nrow=3, labels=c('a', 'b', 'c'), label_size=22)
+plot_grid(human_cp$plot, mouse_cp$plot, puk_cp$plot, fg_cp$plot,
+          nrow=2, labels=c('a', 'b', 'c', 'd'), label_size=22)
 ```
 
 #### Independent large pathways
@@ -2161,15 +2182,19 @@ phc_locus_plot <- plot_feature('phast_cons', 'phastCons score',
 print(phc_locus_plot)
 phc_locus_prop_plot <- plot_feature('phast_cons', 'phastCons score', 
                 gwas_data_file = 'puk_locus_meanphc.tsv', 
-                cutoff=0.15, cut_name='phastCons > 0.15')
+                cutoff=0.15, cut_name='phastCons > 0.15',
+                prop_plot_type = "single")
 print(phc_locus_prop_plot)
 
 fg_phc_locus_plot <- plot_feature('phast_cons', 'phastCons score', 
-                gwas_data_file = 'fg_locus_meanphc.tsv')
+                gwas_data_file = 'fg_locus_meanphc.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)')
 print(fg_phc_locus_plot)
 fg_phc_locus_prop_plot <- plot_feature('phast_cons', 'phastCons score', 
-                gwas_data_file = 'fg_locus_meanphc.tsv', 
-                cutoff=0.15, cut_name='phastCons > 0.15')
+                gwas_data_file = 'fg_locus_meanphc.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)', 
+                cutoff=0.15, cut_name='phastCons > 0.15',
+                prop_plot_type = "single")
 print(fg_phc_locus_prop_plot)
 ```
 
@@ -2197,7 +2222,7 @@ Exporting the SN figures with all gene-level properties \[as usuual, we hide the
 
 ```{r}
 #| fig-show: hide
-# Figure SN2.2
+# Figure SN2.2 and SN2.4
 plot_grid(count_plot_lw, ppi_plot_lw, gobp_plot_lw, loeuf_plot_lw,
           nrow=2, labels=c('a', 'b', 'c', 'd'), label_size=20)
 plot_grid(count_plot_fm, ppi_plot_fm, gobp_plot_fm, loeuf_plot_fm,
@@ -2302,7 +2327,7 @@ drc_prop_plot_fm
 
 ```{r}
 #| fig-show: hide
-# SN2 final figure
+# SN2 final figure SN2.5
 plot_grid(ihs_pval_prop_plot_fm, drc_prop_plot_fm,
           nrow=2, labels=c('a', 'b'))
 ```
@@ -2348,7 +2373,8 @@ ihs_locus_plot <- plot_feature('iHS_GBR_max_500', 'iHS score',
 print(ihs_locus_plot)
 ihs_locus_prop_plot <- plot_feature('iHS_GBR_max_500', 'iHS score', 
                 gwas_data_file = 'puk_locus_maxihs.tsv', 
-                cutoff=4, cut_name='iHS > 4')
+                cutoff=4, cut_name='iHS > 4', 
+                prop_plot_type = "single")
 print(ihs_locus_prop_plot)
 
 # Locus-wise DRC150 value
@@ -2358,25 +2384,31 @@ print(drc_locus_plot)
 drc_locus_prop_plot <- plot_feature('max_drc_150', 'DRC150', 
                 gwas_data_file = 'puk_locus_maxdrc.tsv', 
                 cutoff=0.0025, cut_name='DRC150 > 0.0025',
-                prop_palette = "RdPu")
+                prop_palette = "RdPu", prop_plot_type = "single")
 print(drc_locus_prop_plot)
 
 # Same for FinnGen
 fg_ihs_locus_plot <- plot_feature('iHS_GBR_max_500', 'iHS score', 
-                gwas_data_file = 'fg_locus_maxihs.tsv')
+                gwas_data_file = 'fg_locus_maxihs.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)')
 print(fg_ihs_locus_plot)
 fg_ihs_locus_prop_plot <- plot_feature('iHS_GBR_max_500', 'iHS score', 
-                gwas_data_file = 'fg_locus_maxihs.tsv', 
-                cutoff=4, cut_name='iHS > 4')
+                gwas_data_file = 'fg_locus_maxihs.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)', 
+                cutoff=4, cut_name='iHS > 4',
+                prop_plot_type = "single")
 print(fg_ihs_locus_prop_plot)
 
 fg_drc_locus_plot <- plot_feature('max_drc_150', 'DRC150 score', log_scale=TRUE,
-                gwas_data_file = 'fg_locus_maxdrc.tsv')
+                gwas_data_file = 'fg_locus_maxdrc.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)')
 print(fg_drc_locus_plot)
 fg_drc_locus_prop_plot <- plot_feature('max_drc_150', 'DRC150', 
-                gwas_data_file = 'fg_locus_maxdrc.tsv', 
+                gwas_data_file = 'fg_locus_maxdrc.tsv',
+                gwas_data_name = 'FinnGen (locus-wise)', 
                 cutoff=0.0025, cut_name='DRC150 > 0.0025',
-                prop_palette = "RdPu")
+                prop_palette = "RdPu",
+                prop_plot_type = "single")
 print(fg_drc_locus_prop_plot)
 ```
 
@@ -2384,7 +2416,7 @@ And plotting the extended data figure with the locus-wise positive and negative 
 
 ```{r}
 #| fig-show: hide
-# Extended Data Figure 14
+# Extended Data Figure 14 - 10 * 12 in portrait
 plot_grid(phc_locus_plot, ihs_locus_plot, drc_locus_plot, 
           phc_locus_prop_plot, ihs_locus_prop_plot, drc_locus_prop_plot,
           fg_phc_locus_plot, fg_ihs_locus_plot, fg_drc_locus_plot, 
@@ -2392,7 +2424,7 @@ plot_grid(phc_locus_plot, ihs_locus_plot, drc_locus_plot,
           fg_drc_locus_prop_plot,
           nrow=4, labels=c('a', 'b', 'c', 'd', 'e', 'f',
                            'g', 'h', 'i', 'j', 'k','l'), label_size=20,
-          rel_heights = c(0.7, 1, 0.7, 1))
+          rel_heights = c(1, 0.8, 1, 0.8))
 ```
 
 #### Checking for gene length confounding
@@ -2479,7 +2511,8 @@ table(merged_data$bidirectional)
 sum(merged_data$bidirectional, na.rm=T)/length(na.omit(merged_data$bidirectional))
 bidir_ihs <- plot_feature('bidirectional', '', cutoff=0.5, 
                           cut_name='Bidirectional?',
-                          append_fusil_plot=F)
+                          append_fusil_plot=F,
+                          prop_plot_type = "single")
 
 # Overlapping signatures (based on DRC150)
 merged_data$bidirectional_b <- as.numeric(merged_data$max_drc_150 > 0.0025 &
@@ -2489,7 +2522,8 @@ sum(merged_data$bidirectional_b, na.rm=T)/length(na.omit(merged_data$bidirection
 bidir_drc <- plot_feature('bidirectional_b', '', cutoff=0.5, 
                           cut_name='Bidirectional?',
                           append_fusil_plot=F,
-                          prop_palette = "RdPu")
+                          prop_palette = "RdPu",
+                          prop_plot_type = "single")
 
 # Extended Data Figure 18
 plot_grid(bidir_ihs, bidir_drc, nrow=2, labels=c('a', 'b'), label_size = 20)
